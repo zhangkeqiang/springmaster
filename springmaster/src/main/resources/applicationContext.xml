@@ -13,4 +13,12 @@ xsi:schemaLocation="
        http://www.springframework.org/schema/context/spring-context-3.0.xsd
        http://www.springframework.org/schema/aop 
        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+       
+       <bean name="Greeter" class="com.agilejerry.springmaster.Greeter">
+       		<property name="name" value="Mike"></property>
+       </bean>
+       <bean name="Customer" class="com.agilejerry.springmaster.Customer">
+       		<property name="name" value="Jerry"></property>
+       		<property name="greeter" ref="Greeter"></property>
+       </bean>
 </beans>
