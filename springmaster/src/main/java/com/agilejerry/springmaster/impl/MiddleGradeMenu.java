@@ -1,0 +1,20 @@
+package com.agilejerry.springmaster.impl;
+
+import com.agilejerry.springmaster.Menu;
+
+public class MiddleGradeMenu implements Menu {
+
+	@Override
+	public void orderDish() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getGrade() {
+		return "Middle Grade";
+	}
+	
+	
+
+}

@@ -14,8 +14,8 @@ xsi:schemaLocation="
        http://www.springframework.org/schema/aop 
        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
        
-       
-       <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+ 
+       <context:annotation-config/>
        <bean name="Greeter" class="com.agilejerry.springmaster.Greeter">
        		<property name="name" value="Mike"></property>
        </bean>
@@ -23,8 +23,15 @@ xsi:schemaLocation="
        		<property name="name" value="Jerry"></property>
        		<property name="greeter" ref="Greeter"></property>
        </bean>
-       
-       <!-- 
        <bean name="Wallet" class="com.agilejerry.springmaster.Wallet" />
+      
+      
+       <bean id="HighGradeMenu" class="com.agilejerry.springmaster.impl.HighGradeMenu" />
+       <bean id="MiddleGradeMenu" class="com.agilejerry.springmaster.impl.MiddleGradeMenu" />
+       <!-- 
+              <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> 
+        <bean id="MiddleGradeMenu" class="com.agilejerry.springmaster.impl.MiddleGradeMenu" />
+         <bean id="Menu2" class="com.agilejerry.springmaster.impl.HighGradeMenu" />
+          <bean name="Menu" id="MiddleGradeMenu" class="com.agilejerry.springmaster.impl.MiddleGradeMenu" />
         -->
 </beans>
