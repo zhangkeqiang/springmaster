@@ -1,7 +1,9 @@
 package com.agilejerry.springmaster;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class Customer {
 	private Greeter greeter;
 	private String name;

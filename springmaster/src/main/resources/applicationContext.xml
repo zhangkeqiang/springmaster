@@ -14,7 +14,7 @@ xsi:schemaLocation="
        http://www.springframework.org/schema/aop 
        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
        
-       
+       <context:property-placeholder location="classpath*:/appConfig.properties" />
        <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
        <bean name="Greeter" class="com.agilejerry.springmaster.Greeter">
        		<property name="name" value="Mike"></property>
