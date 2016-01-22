@@ -68,4 +68,6 @@ public class CustomerTest {
 	public void middleGradeMenu_is_Middle_Grade(){
 		Assert.assertEquals("Middle Grade", middleGradeMenu.getGrade());
 	}
+	
+	
 }
