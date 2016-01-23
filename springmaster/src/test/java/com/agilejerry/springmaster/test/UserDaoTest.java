@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.agilejerry.springmaster.UserDao;
+import com.agilejerry.springmaster.dao.UserDao;
 import com.agilejerry.springmaster.entity.UserBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)

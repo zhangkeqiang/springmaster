@@ -1,4 +1,4 @@
-package com.agilejerry.springmaster;
+package com.agilejerry.springmaster.dao;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;

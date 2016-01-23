@@ -19,7 +19,7 @@ public class UserBean implements java.io.Serializable {
 	
 	private Integer userNo;
 	private String userName;
-	//private OrgBean orgBean;
+	private OrgBean orgBean;
 	
 	
 	public UserBean(){
@@ -56,15 +56,15 @@ public class UserBean implements java.io.Serializable {
 	}
 
 
-//	@ManyToOne(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
-//	@JoinColumn(name = "ORG_ID", nullable = false)
-//	public OrgBean getOrgBean() {
-//		return orgBean;
-//	}
-//
-//
-//
-//	public void setOrgBean(OrgBean orgBean) {
-//		this.orgBean = orgBean;
-//	}
+	@ManyToOne(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+	@JoinColumn(name = "ORG_ID", nullable = true)
+	public OrgBean getOrgBean() {
+		return orgBean;
+	}
+
+
+
+	public void setOrgBean(OrgBean orgBean) {
+		this.orgBean = orgBean;
+	}
 }
