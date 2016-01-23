@@ -1,4 +1,4 @@
-package com.agilejerry.springmaster;
+package com.agilejerry.springmaster.test;
 
 import static org.junit.Assert.*;
 
@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -34,6 +35,7 @@ public class CustomerDaoTest {
 	
 	@Resource
 	private SessionFactory sessionFactory;
+	
 	Session session ;
 	
 	@Before
@@ -106,7 +108,7 @@ public class CustomerDaoTest {
 	}
 	
 	@Test
-	public void test_read_relative() {
+	public void test_read_relative1() {
 		System.out.println("test_read_relative");
 		//session.beginTransaction();
 		CustomerBean customA = (CustomerBean) session.byId(CustomerBean.class).getReference(1);
@@ -118,6 +120,31 @@ public class CustomerDaoTest {
 		//session.getTransaction().commit();
 	}
 	
+	
+	
+	@Test
+	public void test_read_relative2() {
+		System.out.println("test_read_relative");
+
+		CustomerBean customA = (CustomerBean) session.get(CustomerBean.class,1);
+		System.out.println(customA.getUsername());
+		Set<RelativeBean> relativeBeans = customA.getRelativeBeans();
+		Assert.assertEquals(2, relativeBeans.size());
+		for (RelativeBean relativeBean : relativeBeans) {
+			System.out.println(relativeBean.getName() + relativeBean.getPhone());
+		}
+
+	}
+	
+	
+	@Test 
+	public void find_relative_custom(){
+		Query q = session.createQuery("FROM RelativeBean WHERE name = '李建成'");
+		RelativeBean xiaoming = (RelativeBean)q.uniqueResult();
+		Assert.assertNotNull(xiaoming.getCustomerBean());
+		System.out.println(xiaoming.getName());
+		System.out.println(xiaoming.getCustomerBean().getUsername());
+	}
 	@After
 	public void clear(){
 		session.close();

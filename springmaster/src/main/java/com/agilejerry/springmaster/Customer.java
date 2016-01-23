@@ -13,6 +13,11 @@ public class Customer {
 	
 	private Menu menu;
 	
+	
+	public Customer(){
+		
+	}
+	
     public String getName() {
 		return name;
 	}

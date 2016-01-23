@@ -1,4 +1,4 @@
-package com.agilejerry.springmaster;
+package com.agilejerry.springmaster.test;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.agilejerry.springmaster.UserDao;
 import com.agilejerry.springmaster.entity.UserBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)

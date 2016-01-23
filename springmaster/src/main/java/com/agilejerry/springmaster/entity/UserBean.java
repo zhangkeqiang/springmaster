@@ -1,9 +1,13 @@
 package com.agilejerry.springmaster.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -15,6 +19,12 @@ public class UserBean implements java.io.Serializable {
 	
 	private Integer userNo;
 	private String userName;
+	//private OrgBean orgBean;
+	
+	
+	public UserBean(){
+		
+	}
     @Id
     @GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
@@ -44,4 +54,17 @@ public class UserBean implements java.io.Serializable {
 	public String toString(){
 		return "User[NO=" + this.userNo +", NAME=" + this.userName;
 	}
+
+
+//	@ManyToOne(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+//	@JoinColumn(name = "ORG_ID", nullable = false)
+//	public OrgBean getOrgBean() {
+//		return orgBean;
+//	}
+//
+//
+//
+//	public void setOrgBean(OrgBean orgBean) {
+//		this.orgBean = orgBean;
+//	}
 }

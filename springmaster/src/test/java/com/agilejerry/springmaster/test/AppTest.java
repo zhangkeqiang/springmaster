@@ -1,4 +1,4 @@
-package com.agilejerry.springmaster;
+package com.agilejerry.springmaster.test;
 
 import static org.junit.Assert.*;
 

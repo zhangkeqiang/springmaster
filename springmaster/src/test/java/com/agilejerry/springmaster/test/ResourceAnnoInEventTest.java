@@ -1,4 +1,4 @@
-package com.agilejerry.springmaster;
+package com.agilejerry.springmaster.test;
 
 import javax.annotation.Resource;
 
@@ -7,29 +7,34 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.agilejerry.springmaster.Event;
+import com.agilejerry.springmaster.EventDao;
+import com.agilejerry.springmaster.Menu;
 import com.agilejerry.springmaster.impl.MiddleGradeMenu;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
-public class EventTest {
+public class ResourceAnnoInEventTest {
 	
 	@Autowired 
 	private Event event;
 	
-
-	@Autowired
-	@Qualifier("HighGradeMenu")
+	@Autowired 
+	private EventDao dao;
+	
+	@Resource(name="HighGradeMenu")
 	private Menu highGradeMenu;
 	
-	@Autowired
-	@Qualifier("MiddleGradeMenu")
+	@Resource(name="MiddleGradeMenu")
 	private Menu middleGradeMenu;
+	
 	@Test 
 	public void autowired_class_should_be_instantiated(){
 		Assert.assertNotNull(event);
@@ -46,6 +51,9 @@ public class EventTest {
 		Assert.assertEquals("Middle Grade", middleGradeMenu.getGrade());
 	}
 	
-
+	@Test
+	public void dao_messange_is_Hello(){
+		Assert.assertEquals("Hello", dao.getMessage());
+	}
 
 }
