@@ -1,5 +1,8 @@
 package com.agilejerry.springmaster.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -19,12 +24,11 @@ public class UserBean implements java.io.Serializable {
 	
 	private Integer userNo;
 	private String userName;
-	private OrgBean orgBean;
-	
-	
-	public UserBean(){
-		
+	private OrgBean org;
+	private Set<GroupBean> groups = new HashSet<GroupBean>(0);
+	public UserBean(){		
 	}
+	
     @Id
     @GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
@@ -52,19 +56,31 @@ public class UserBean implements java.io.Serializable {
 	}
 
 	public String toString(){
-		return "User-NO=" + this.userNo +", NAME=" + this.userName;
+		return "[User]NO:" + this.userNo +", NAME=" + this.userName;
 	}
 
 
 	@ManyToOne(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
 	@JoinColumn(name = "ORG_ID", nullable = true)
-	public OrgBean getOrgBean() {
-		return orgBean;
+	public OrgBean getOrg() {
+		return org;
 	}
 
 
 
-	public void setOrgBean(OrgBean orgBean) {
-		this.orgBean = orgBean;
+	public void setOrg(OrgBean org) {
+		this.org = org;
+	}
+	
+	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+	@JoinTable(name = "GROUP_MEMBER", joinColumns = { 
+			@JoinColumn(name = "MEMBER_ID", nullable = true, updatable = true) }, 
+			inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", 
+					nullable = true, updatable = true) })
+	public Set<GroupBean> getGroups() {
+		return groups;
+	}
+	public void setGroups(Set<GroupBean> groups) {
+		this.groups = groups;
 	}
 }

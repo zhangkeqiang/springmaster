@@ -21,6 +21,7 @@ public class UserDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<UserBean> list(){
+		
 		return sessionFactory.getCurrentSession().createQuery("FROM UserBean").list();		
 	}
 

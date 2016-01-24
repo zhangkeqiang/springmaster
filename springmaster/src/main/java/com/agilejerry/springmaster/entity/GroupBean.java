@@ -9,26 +9,28 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="ORG")
-public class OrgBean implements java.io.Serializable {
+@Table(name="TGROUP")
+public class GroupBean implements java.io.Serializable {
 
-	private static final long serialVersionUID = -6098017345019583939L;
+	private static final long serialVersionUID = 6794699691234549462L;
 	private Integer id;
 	private String name;
+	private String type;
 	
-	private Set<UserBean> users = new HashSet<UserBean>(0);
 	
-	public OrgBean(String name) {
+	
+	public GroupBean(String name) {
 		this.name = name;
 	}
 
-	public OrgBean() {
+	public GroupBean() {
 	}
 
 
@@ -44,9 +46,7 @@ public class OrgBean implements java.io.Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
-	//@Column(name="NAME", nullable=false, length=255)
+	@Column(name="GROUP_NAME")
 	public String getName() {
 		return name;
 	}
@@ -58,11 +58,11 @@ public class OrgBean implements java.io.Serializable {
 	}
 
 	public String toString(){
-		return "[ORG]ID:" + this.id +", NAME=" + this.name;
+		return "[GROUP]ID:" + this.id +", NAME:" + this.name;
 	}
 
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "org",cascade=(CascadeType.ALL))
+	private Set<UserBean> users = new HashSet<UserBean>(0);
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "groups",cascade=(CascadeType.ALL))
 	public Set<UserBean> getUsers() {
 		return users;
 	}
@@ -71,6 +71,15 @@ public class OrgBean implements java.io.Serializable {
 
 	public void setUsers(Set<UserBean> users) {
 		this.users = users;
+	}
+
+	@Column(name="GROUP_TYPE")
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	
