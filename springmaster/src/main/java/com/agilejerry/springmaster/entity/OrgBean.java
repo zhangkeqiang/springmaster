@@ -28,6 +28,8 @@ public class OrgBean implements java.io.Serializable {
 		this.name = name;
 	}
 
+	public OrgBean() {
+	}
 
 
 	@Id

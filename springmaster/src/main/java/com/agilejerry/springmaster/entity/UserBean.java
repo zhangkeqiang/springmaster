@@ -52,11 +52,11 @@ public class UserBean implements java.io.Serializable {
 	}
 
 	public String toString(){
-		return "User[NO=" + this.userNo +", NAME=" + this.userName;
+		return "User-NO=" + this.userNo +", NAME=" + this.userName;
 	}
 
 
-	@ManyToOne(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+	@ManyToOne(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
 	@JoinColumn(name = "ORG_ID", nullable = true)
 	public OrgBean getOrgBean() {
 		return orgBean;

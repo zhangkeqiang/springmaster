@@ -23,9 +23,10 @@ public class UserDaoTest {
 	@Test
 	public void test() {
 		UserBean user =new UserBean();
-		user.setUserName("张珊珊");
-		Assert.assertTrue(dao.create(user));
+		user.setUserName("李珊珊");
+		Assert.assertTrue(dao.create(user) > 0);
 		System.out.println(user.getUserNo());
+		Assert.assertTrue(dao.delete(user));
 	}
 	
 	
@@ -34,6 +35,7 @@ public class UserDaoTest {
 		List<UserBean> list = dao.list();
 		for(UserBean user:list){
 			System.out.println(user.getUserName()+"   "+user.getUserNo());
+			System.out.println(user.getOrgBean());
 		}
 	}
 	
