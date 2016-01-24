@@ -8,11 +8,14 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -34,7 +37,8 @@ public class OrgTest {
 		ss = sessionFactory.openSession();
 	}
 	@Test
-	public void test() {
+	public void testCRUD_of_Org() {
+		System.out.println(testName.getMethodName());
 		Serializable id = ss.save(new OrgBean("微软公司BBB"));
 		System.out.println("Save result Serializable is " + id);
 		OrgBean org = (OrgBean) ss.get(OrgBean.class, id);
@@ -46,6 +50,7 @@ public class OrgTest {
 	
 	@Test
 	public void testlist() {
+		System.out.println(testName.getMethodName());
 		@SuppressWarnings("unchecked")
 		List<OrgBean> orgList = ss.createQuery("FROM OrgBean").list();
 		for(OrgBean org:orgList){
@@ -56,7 +61,23 @@ public class OrgTest {
 			}
 		}
 	}
+	@Rule 
+	public TestName testName = new TestName();
+	
+	@Test
+	public void search_user_according_to_org() {
+		System.out.println(testName.getMethodName());
+		String hql = "SELECT u FROM UserBean u JOIN  u.org o WHERE o.name like :OrgName ";
+		@SuppressWarnings("unchecked")
+		Query q = ss.createQuery(hql);
+		q.setString("OrgName", "%微软%");
 
+		List<UserBean> users = (List<UserBean>) q.list();
+		for(UserBean user: users){
+			System.out.println(user);
+			System.out.println(user.getOrg());
+		}
+	}
 	@After
 	public void tearDown(){
 		ss.close();
