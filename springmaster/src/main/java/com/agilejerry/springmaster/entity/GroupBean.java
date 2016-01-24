@@ -58,17 +58,15 @@ public class GroupBean implements java.io.Serializable {
 	}
 
 	public String toString(){
-		return "[GROUP]ID:" + this.id +", NAME:" + this.name;
+		return "[GROUP]ID:" + this.id +", NAME:" + this.name + ", TYPE:" + this.type;
 	}
 
 	private Set<UserBean> users = new HashSet<UserBean>(0);
+	
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "groups",cascade=(CascadeType.ALL))
 	public Set<UserBean> getUsers() {
 		return users;
 	}
-
-
-
 	public void setUsers(Set<UserBean> users) {
 		this.users = users;
 	}

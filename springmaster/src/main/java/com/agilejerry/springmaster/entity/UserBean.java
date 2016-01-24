@@ -83,4 +83,7 @@ public class UserBean implements java.io.Serializable {
 	public void setGroups(Set<GroupBean> groups) {
 		this.groups = groups;
 	}
+
+
+
 }
