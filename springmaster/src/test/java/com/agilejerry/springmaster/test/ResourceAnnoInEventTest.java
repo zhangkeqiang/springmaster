@@ -14,8 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.Event;
-import com.agilejerry.springmaster.EventDao;
 import com.agilejerry.springmaster.Menu;
+import com.agilejerry.springmaster.dao.EventDao;
 import com.agilejerry.springmaster.impl.MiddleGradeMenu;
 
 

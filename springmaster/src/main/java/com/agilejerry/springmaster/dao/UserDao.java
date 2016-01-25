@@ -2,14 +2,17 @@ package com.agilejerry.springmaster.dao;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
-@Component
+@Repository
 public class UserDao{
 	@Resource
 	private SessionFactory sessionFactory;
@@ -39,5 +42,19 @@ public class UserDao{
 		
 		return null;
 		
+	}
+
+	public UserBean get(int i) {
+		return (UserBean)sessionFactory.getCurrentSession().get(UserBean.class, i);
+	}
+
+	public boolean checkAdministrationGroupOfUser(UserBean userBean) {
+		Set<GroupBean> groups = userBean.getGroups();
+		for(GroupBean group:groups){
+			if(group.getType().equals("Administration")){
+				return true;
+			}
+		}
+		return false;		
 	}
 }

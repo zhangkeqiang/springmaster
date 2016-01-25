@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -63,7 +65,12 @@ public class GroupBean implements java.io.Serializable {
 
 	private Set<UserBean> users = new HashSet<UserBean>(0);
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "groups",cascade=(CascadeType.ALL))
+	//@ManyToMany(fetch = FetchType.EAGER, mappedBy = "groups",cascade=(CascadeType.ALL))
+	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+	@JoinTable(name = "GROUP_MEMBER", joinColumns = { 
+			@JoinColumn(name = "GROUP_ID", nullable = true, updatable = true) }, 
+			inverseJoinColumns = { @JoinColumn(name = "MEMBER_ID", 
+					nullable = true, updatable = true) })
 	public Set<UserBean> getUsers() {
 		return users;
 	}
