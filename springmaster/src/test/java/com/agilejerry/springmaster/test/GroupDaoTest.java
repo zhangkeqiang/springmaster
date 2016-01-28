@@ -32,12 +32,13 @@ import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
 public class GroupDaoTest {
-
+	private static final Logger log = LoggerFactory.getLogger(GroupDaoTest.class);
 	@Autowired 
 	private GroupDao groupDao;
 	@Autowired
@@ -46,10 +47,12 @@ public class GroupDaoTest {
 	public TestName testName = new TestName();
 	@Before
 	public void setUp(){
+		log.warn(testName.getMethodName() + " Start...");
 		Assert.assertNotNull(groupDao);
 	}
 	@Test
 	public void testGroupCRUD() {
+		
 		GroupBean groupA = new GroupBean();
 		groupA.setName("销售2组");
 		groupA.setType("Administration");
@@ -72,11 +75,12 @@ public class GroupDaoTest {
 
 	@Test 
 	public void user_should_belong_only_one_administration_group1(){
+		
 		Object[][] data = {
 				{50, 1, GroupDao.HAVE_ADMINISTRATION_GROUP},
 				{1,  1, GroupDao.DUPLICATED_MEMBER},
 				{50, 3, GroupDao.HAVE_ADMINISTRATION_GROUP},
-				{50, 4, GroupDao.OK}
+				{50, 4, GroupDao.HAVE_ADMINISTRATION_GROUP}
 		};
 		for(int i=0;i<data.length;i++){
 			GroupBean groupA = groupDao.get((int)data[i][0]);
@@ -87,12 +91,12 @@ public class GroupDaoTest {
 	
 	@Test
 	public void group_users_can_be_get(){
-		System.out.println(testName.getMethodName());
+		log.warn(testName.getMethodName());
 		GroupBean groupA = groupDao.get(50);
 		Set<UserBean> users = (Set<UserBean>) groupA.getUsers();
 		for(UserBean user: users){
-			System.out.println(user);
-			System.out.println(user.getOrg());
+			log.warn(user.toString());
+			log.warn(user.getOrg().toString());
 		}
 	}
 	
@@ -114,6 +118,6 @@ public class GroupDaoTest {
 	
 	@After
 	public void tearDown(){
-		
+		log.warn(testName.getMethodName() + " end");
 	}
 }

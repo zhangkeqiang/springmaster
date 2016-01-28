@@ -27,12 +27,14 @@ import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
-
+import org.apache.logging.log4j.LogManager;  
+import org.apache.logging.log4j.Logger;  
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
 public class GroupTest {
 
+	static Logger logger = LogManager.getLogger(GroupTest.class);    
 	@Resource
 	private SessionFactory sessionFactory;
 	private Session ss;
@@ -103,6 +105,9 @@ public class GroupTest {
 	@Test 
 	public void user_should_belong_only_one_administration_group3(){
 		System.out.println("=====user find groups+join+grouptype user+====");
+   
+	      logger.error("Did it again!");   //Log a message object with the ERROR level    
+
 		UserBean user = (UserBean) ss.byId(UserBean.class).load(1);
 
 		Set<GroupBean> groups = user.getGroups();
