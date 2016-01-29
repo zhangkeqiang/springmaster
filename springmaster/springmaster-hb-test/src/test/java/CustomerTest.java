@@ -1,4 +1,4 @@
-package com.agilejerry.springmaster.test;
+
 
 import javax.annotation.Resource;
 
@@ -13,32 +13,53 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.agilejerry.springmaster.Event;
+import com.agilejerry.springmaster.Customer;
+import com.agilejerry.springmaster.Greeter;
 import com.agilejerry.springmaster.Menu;
-import com.agilejerry.springmaster.dao.EventDao;
 import com.agilejerry.springmaster.impl.MiddleGradeMenu;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:withhibernate.xml") 
-public class ResourceAnnoInEventTest {
+@ContextConfiguration(locations="classpath:customerTest.xml") 
+public class CustomerTest {
 	
 	@Autowired 
-	private Event event;
+	private Customer customerA;
 	
-	@Autowired 
-	private EventDao dao;
+	//@Autowired 
+	@Resource
+	private Greeter greeterA;
 	
-	@Resource(name="HighGradeMenu")
+	@Autowired
+	@Qualifier("HighGradeMenu")
 	private Menu highGradeMenu;
 	
-	@Resource(name="MiddleGradeMenu")
+	
+	
+	@Autowired
+	@Qualifier("MiddleGradeMenu")
 	private Menu middleGradeMenu;
+	
+	@Test
+	public void testInit(){
+		ApplicationContext context = new ClassPathXmlApplicationContext(   
+                "customerTest.xml"); 
+		Greeter greeter = (Greeter) context.getBean("Greeter");
+		Customer customer = (Customer) context.getBean("Customer");
+		Assert.assertNotNull(greeter);
+		Assert.assertNotNull(customer.getGreeter());
+		Assert.assertEquals("Mike", greeter.getName());
+		Assert.assertEquals("Jerry", customer.getName());
+		Assert.assertEquals(greeter, customer.getGreeter());
+		
+	}
 	
 	@Test 
 	public void autowired_class_should_be_instantiated(){
-		Assert.assertNotNull(event);
-		Assert.assertNotNull(event.getWallet());
+		Assert.assertNotNull(customerA);
+		Assert.assertNotNull(greeterA);
+		Assert.assertNotNull(customerA.getWallet());
+		Assert.assertNotNull(highGradeMenu);
 	}
 	
 	@Test
@@ -51,9 +72,5 @@ public class ResourceAnnoInEventTest {
 		Assert.assertEquals("Middle Grade", middleGradeMenu.getGrade());
 	}
 	
-	@Test
-	public void dao_messange_is_Hello(){
-		Assert.assertEquals("Hello", dao.getMessage());
-	}
-
+	
 }
