@@ -6,7 +6,6 @@ public class MiddleGradeMenu implements Menu {
 
 	@Override
 	public void orderDish() {
-		// TODO Auto-generated method stub
 
 	}
 
