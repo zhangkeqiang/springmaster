@@ -254,5 +254,6 @@
 	</build>
 	<modules>
 		<module>springmaster-mybatis</module>
+		<module>springmaster-hb</module>
 	</modules>
 </project>
