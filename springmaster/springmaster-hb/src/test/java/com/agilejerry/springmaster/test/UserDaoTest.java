@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.agilejerry.springmaster.dao.GroupDao;
 import com.agilejerry.springmaster.dao.UserDao;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -29,8 +30,9 @@ public class UserDaoTest {
 	@Rule 
 	public TestName testName = new TestName();
 	@Autowired
-	private UserDao dao;
-	
+	private UserDao userDao;
+	@Autowired 
+	private GroupDao groupDao;
 	@Before
 	public void setUp(){
 		log.warn(testName.getMethodName() + " Start...");		
@@ -44,15 +46,15 @@ public class UserDaoTest {
 	public void test() {
 		UserBean user =new UserBean();
 		user.setUserName("李珊珊");
-		Assert.assertTrue(dao.create(user) > 0);
+		Assert.assertTrue(userDao.create(user) > 0);
 		log.warn(user.toString());
-		Assert.assertTrue(dao.delete(user));
+		Assert.assertTrue(userDao.delete(user));
 	}
 	
 	
 	@Test
 	public void list_show_all_user() {
-		List<UserBean> list = dao.list();
+		List<UserBean> list = userDao.list();
 		
 		for(UserBean user:list){
 			log.warn(user.toString());
@@ -61,6 +63,33 @@ public class UserDaoTest {
 			for(GroupBean group:groups){
 				log.warn(group.toString());
 			}
+		}
+	}
+	
+	@Test
+	public void user_can_join_to_one_group(){		
+		//get group from groupDao 
+		int[][] data = {
+				{1,2,GroupDao.DUPLICATED_MEMBER},
+				{1,3,GroupDao.OK},
+		};
+		for(int i=0;i<data.length;i++){
+			GroupBean group = groupDao.get(data[i][0]);
+			UserBean user = userDao.get(data[i][1]);
+			
+			Set<GroupBean> groups = user.getGroups();
+			for(GroupBean userGroup:groups){
+				log.warn(userGroup.toString());
+			}
+			int ret = userDao.joinGroup(user, group);
+			Assert.assertEquals(data[i][2],ret);
+			log.warn("List groups after join group");
+			for(GroupBean userGroup:groups){
+				log.warn(userGroup.toString());
+			}
+			UserBean userB = userDao.get(2);
+			boolean isJoined = userDao.isJoined(userB,group);
+			Assert.assertTrue(isJoined);
 		}
 	}
 	

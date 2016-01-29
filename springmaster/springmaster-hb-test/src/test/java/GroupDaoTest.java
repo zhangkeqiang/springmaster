@@ -80,7 +80,8 @@ public class GroupDaoTest {
 				{50, 1, GroupDao.HAVE_ADMINISTRATION_GROUP},
 				{1,  1, GroupDao.DUPLICATED_MEMBER},
 				{50, 3, GroupDao.HAVE_ADMINISTRATION_GROUP},
-				{50, 4, GroupDao.HAVE_ADMINISTRATION_GROUP}
+				{50, 4, GroupDao.HAVE_ADMINISTRATION_GROUP},
+				{1, 2, GroupDao.OK}
 		};
 		for(int i=0;i<data.length;i++){
 			GroupBean groupA = groupDao.get((int)data[i][0]);

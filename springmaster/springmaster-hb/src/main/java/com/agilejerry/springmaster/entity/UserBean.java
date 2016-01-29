@@ -72,7 +72,8 @@ public class UserBean implements java.io.Serializable {
 		this.org = org;
 	}
 	
-	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+	//@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.ALL})
 	@JoinTable(name = "GROUP_MEMBER", joinColumns = { 
 			@JoinColumn(name = "MEMBER_ID", nullable = true, updatable = true) }, 
 			inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", 
