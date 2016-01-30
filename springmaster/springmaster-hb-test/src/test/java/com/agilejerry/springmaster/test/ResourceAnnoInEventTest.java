@@ -1,3 +1,4 @@
+package com.agilejerry.springmaster.test;
 
 
 import javax.annotation.Resource;

@@ -1,3 +1,4 @@
+package com.agilejerry.springmaster.test;
 
 
 import static org.junit.Assert.*;
@@ -32,13 +33,17 @@ import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;  
+import org.apache.logging.log4j.Logger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
 public class GroupDaoTest {
-	private static final Logger log = LoggerFactory.getLogger(GroupDaoTest.class);
+	private static final Logger log = LogManager.getLogger(GroupDaoTest.class);
+	
+   @Resource
+    private SessionFactory sessionFactory;
+	   
 	@Autowired 
 	private GroupDao groupDao;
 	@Autowired
@@ -68,57 +73,75 @@ public class GroupDaoTest {
 		Assert.assertNull(groupC);
 	}
 	
-	@Test
-	public void testlist() {
-		
-	}
 
+    int[][] data = {
+//            {50, 1, GroupDao.HAVE_ADMINISTRATION_GROUP},
+//            {1,  1, GroupDao.DUPLICATED_MEMBER},
+//            {50, 3, GroupDao.HAVE_ADMINISTRATION_GROUP},
+//            {50, 4, GroupDao.HAVE_ADMINISTRATION_GROUP},
+            {1, 2, GroupDao.OK}
+    };
+    
 	@Test 
 	public void user_should_belong_only_one_administration_group1(){
-		
-		Object[][] data = {
-				{50, 1, GroupDao.HAVE_ADMINISTRATION_GROUP},
-				{1,  1, GroupDao.DUPLICATED_MEMBER},
-				{50, 3, GroupDao.HAVE_ADMINISTRATION_GROUP},
-				{50, 4, GroupDao.HAVE_ADMINISTRATION_GROUP},
-				{1, 2, GroupDao.OK}
-		};
 		for(int i=0;i<data.length;i++){
 			GroupBean groupA = groupDao.get((int)data[i][0]);
+			userDao.setSession(groupDao.getSession());
 			UserBean userA = userDao.get((int)data[i][1]);
+			log.info(groupA);
+			log.info(userA);
 			Assert.assertEquals((int)data[i][2], groupDao.addMember(groupA, userA));
-		}		
+			if(data[i][2]!= GroupDao.HAVE_ADMINISTRATION_GROUP)
+			    Assert.assertTrue(userDao.isJoined(userA, groupA));
+		}
+		
+//        for(int i=0;i<data.length;i++){
+//            if(data[i][2] == GroupDao.OK){
+//                // new group member need be removed
+//              GroupBean group = groupDao.get(data[i][0]);
+//              UserBean user = userDao.get(data[i][1]);
+//              groupDao.removeMember(group, user);
+//            }
+//        }
 	}
 	
 	@Test
 	public void group_users_can_be_get(){
 		log.warn(testName.getMethodName());
-		GroupBean groupA = groupDao.get(50);
-		Set<UserBean> users = (Set<UserBean>) groupA.getUsers();
+//		GroupBean groupA = groupDao.get(50);
+//		Set<UserBean> users = groupDao.getUsers(groupA);
+		
+		Session s = sessionFactory.openSession();
+        
+        GroupBean g = (GroupBean) s.get(GroupBean.class, 50);
+        Set<UserBean> users = g.getUsers();
+       
+        
 		for(UserBean user: users){
 			log.warn(user.toString());
 			log.warn(user.getOrg().toString());
 		}
+		
+	    s.close();
 	}
 	
-	@Test 
-	public void user_should_belong_only_one_administration_group2(){
-	
-	}
-	
-	@Test 
-	public void user_should_belong_only_one_administration_group3(){
 	
 
-	}
 	
-	@Test 
-	public void user_can_be_added_with_group(){
-	
-	}
+
 	
 	@After
 	public void tearDown(){
 		log.warn(testName.getMethodName() + " end");
+	      //clear the changed or added data
+/*        for(int i=0;i<data.length;i++){
+            if(data[i][2] == GroupDao.OK){
+                // new group member need be removed
+              GroupBean group = groupDao.get(data[i][0]);
+              UserBean user = userDao.get(data[i][1]);
+              userDao.breakAwayGroup(user, group);
+            }
+        }*/
+		groupDao.closeSession();
 	}
 }
