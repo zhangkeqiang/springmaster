@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.persistence.Query;
 
 @Repository
 public class UserDao extends BaseDao{
@@ -97,7 +98,6 @@ public class UserDao extends BaseDao{
     }
 
     public boolean isJoined(UserBean user, GroupBean group) {
-        //UserBean userB = get(user.getUserNo());
         Set<GroupBean> groupList = (Set<GroupBean>) user.getGroups();
         ArrayList<Integer> groupIdList = new ArrayList<Integer>();
         for(GroupBean userGroup:groupList){
@@ -130,5 +130,14 @@ public class UserDao extends BaseDao{
            
         }
         return ret;
+    }
+
+    public boolean isJoined2(UserBean userC, GroupBean group) {
+        String hql = "FROM UserBean u JOIN u.groups g WHERE u.id = ? AND g.id = ?";
+        org.hibernate.Query q = getSession().createQuery(hql);
+        q.setParameter(0, userC.getUserNo());
+        q.setParameter(1, group.getId());
+        return q.list().size()>0;
+        
     }
 }

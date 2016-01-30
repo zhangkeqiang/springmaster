@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import java.io.Serializable;
 import java.security.acl.Group;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -75,34 +76,66 @@ public class GroupDaoTest {
 	
 
     int[][] data = {
-//            {50, 1, GroupDao.HAVE_ADMINISTRATION_GROUP},
-//            {1,  1, GroupDao.DUPLICATED_MEMBER},
-//            {50, 3, GroupDao.HAVE_ADMINISTRATION_GROUP},
-//            {50, 4, GroupDao.HAVE_ADMINISTRATION_GROUP},
-            {1, 2, GroupDao.OK}
+            {6, 1, GroupDao.DUPLICATED_MEMBER,-1},
+            {1,  1, GroupDao.DUPLICATED_MEMBER,-2},
+            {50, 3, GroupDao.DUPLICATED_MEMBER,-1},
+            {50, 4, GroupDao.DUPLICATED_MEMBER,-1},
+            {1, 2, GroupDao.OK,1},
+            {1, 3, GroupDao.OK,1}
     };
     
+    @Test
+    public void testisJoined(){
+        userDao.setSession(groupDao.getSession());
+        for(int i=0;i<data.length;i++){
+            GroupBean groupA = groupDao.get((int)data[i][0]);            
+            UserBean userA = userDao.get((int)data[i][1]);
+            Assert.assertEquals(data[i][2] == GroupDao.DUPLICATED_MEMBER, userDao.isJoined2(userA, groupA));
+        }
+    }
 	@Test 
-	public void user_should_belong_only_one_administration_group1(){
+	public void user_can_be_joined_into_one_group(){
 		for(int i=0;i<data.length;i++){
 			GroupBean groupA = groupDao.get((int)data[i][0]);
 			userDao.setSession(groupDao.getSession());
 			UserBean userA = userDao.get((int)data[i][1]);
 			log.info(groupA);
 			log.info(userA);
-			Assert.assertEquals((int)data[i][2], groupDao.addMember(groupA, userA));
-			if(data[i][2]!= GroupDao.HAVE_ADMINISTRATION_GROUP)
-			    Assert.assertTrue(userDao.isJoined(userA, groupA));
+			Assert.assertEquals((int)data[i][3], groupDao.addMember(groupA, userA));
+			
+			if(data[i][3]!= GroupDao.HAVE_ADMINISTRATION_GROUP){
+			    Set<UserBean> members = groupA.getUsers();
+			    for(UserBean member: members){
+			        log.info(member);
+			    }
+			    UserBean userB = userDao.get(userA.getUserNo());
+			    Set<GroupBean> groupList = (Set<GroupBean>) userB.getGroups();
+		        
+		        for(GroupBean userGroup:groupList){
+		            log.warn(userGroup);
+		        }        
+			    Assert.assertTrue(userDao.isJoined2(userB, groupA));
+			}
 		}
 		
-//        for(int i=0;i<data.length;i++){
-//            if(data[i][2] == GroupDao.OK){
-//                // new group member need be removed
-//              GroupBean group = groupDao.get(data[i][0]);
-//              UserBean user = userDao.get(data[i][1]);
-//              groupDao.removeMember(group, user);
-//            }
-//        }
+        for(int i=0;i<data.length;i++){
+            if(data[i][3] == GroupDao.OK){
+              // new group member need be removed
+              GroupBean group = groupDao.get(data[i][0]);
+              UserBean user = userDao.get(data[i][1]);
+              groupDao.removeMember(group, user);
+              Set<UserBean> members = group.getUsers();
+              for(UserBean member: members){
+                  log.info(member);
+              }
+              UserBean userC = userDao.get(data[i][1]);
+              Set<GroupBean> groupList = (Set<GroupBean>) userC.getGroups();              
+              for(GroupBean userGroup:groupList){
+                  log.warn(userGroup);
+              }    
+              Assert.assertFalse(userDao.isJoined2(userC, group));
+            }
+        }
 	}
 	
 	@Test
@@ -111,7 +144,7 @@ public class GroupDaoTest {
 //		GroupBean groupA = groupDao.get(50);
 //		Set<UserBean> users = groupDao.getUsers(groupA);
 		
-		Session s = sessionFactory.openSession();
+		Session s = groupDao.getSession();
         
         GroupBean g = (GroupBean) s.get(GroupBean.class, 50);
         Set<UserBean> users = g.getUsers();
@@ -122,7 +155,7 @@ public class GroupDaoTest {
 			log.warn(user.getOrg().toString());
 		}
 		
-	    s.close();
+	   
 	}
 	
 	

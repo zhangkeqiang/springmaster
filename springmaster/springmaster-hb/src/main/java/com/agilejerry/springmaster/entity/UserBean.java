@@ -60,7 +60,7 @@ public class UserBean implements java.io.Serializable {
 	}
 
 
-	@ManyToOne(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+	@ManyToOne(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
 	@JoinColumn(name = "ORG_ID", nullable = true)
 	public OrgBean getOrg() {
 		return org;
@@ -73,7 +73,7 @@ public class UserBean implements java.io.Serializable {
 	}
 	
 	//@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.MERGE,CascadeType.REFRESH})
-	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.ALL})
+	@ManyToMany(fetch = FetchType.LAZY,cascade={CascadeType.ALL})
 	@JoinTable(name = "GROUP_MEMBER", joinColumns = { 
 			@JoinColumn(name = "MEMBER_ID", nullable = true, updatable = true) }, 
 			inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", 
