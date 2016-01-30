@@ -1,5 +1,6 @@
 package com.agilejerry.springmaster.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table( name = "Customer" )
-public class CustomerBean implements java.io.Serializable  {
+public class CustomerBean implements Serializable  {
 
 	private static final long serialVersionUID = 8728656013044878089L;
 	

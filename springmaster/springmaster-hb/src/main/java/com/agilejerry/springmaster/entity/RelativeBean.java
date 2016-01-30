@@ -1,4 +1,5 @@
 package com.agilejerry.springmaster.entity;
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "RELATIVE")
-public class RelativeBean implements java.io.Serializable  {
+public class RelativeBean implements Serializable  {
 	private static final long serialVersionUID = -7903495555694399175L;
 
 	private Integer Id;

@@ -1,9 +1,6 @@
 package com.agilejerry.springmaster.dao;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
-
 import org.apache.logging.log4j.LogManager;  
 import org.apache.logging.log4j.Logger;  
 import org.springframework.stereotype.Repository;
@@ -16,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
-import javax.persistence.Query;
+
 
 @Repository
 public class UserDao extends BaseDao{
     
+    public static final String ADMINISTRATION = "Administration";
     private static final Logger LOGGER = LogManager.getLogger(UserDaoTest.class);
     
     public int create(UserBean user){
@@ -51,7 +48,7 @@ public class UserDao extends BaseDao{
     
     public List<UserBean> searchByName(String name){
         
-        return null;
+        return new ArrayList<UserBean>();
         
     }
 
@@ -63,7 +60,7 @@ public class UserDao extends BaseDao{
         UserBean user = get(userBean.getUserNo());
         Set<GroupBean> groups = user.getGroups();
         for(GroupBean group:groups){
-            if(group.getType().equals("Administration")){
+            if(group.getType().equals(ADMINISTRATION)){
                 return true;
             }
         }
@@ -110,16 +107,16 @@ public class UserDao extends BaseDao{
             s.getTransaction().commit();   
             ret = GroupDao.OK;
         }catch(org.hibernate.NonUniqueObjectException e){
+            s.getTransaction().rollback();
             LOGGER.warn(user.getUserName() +"has already joined that group");
             LOGGER.warn(e.getMessage());
             LOGGER.error(e);
             ret = GroupDao.DUPLICATED_MEMBER;
         }catch(Exception e){
+            s.getTransaction().rollback();
             LOGGER.error(e.getMessage() + e.getClass());
             LOGGER.info(e);
             ret = -99;
-        }finally{
-           
         }
         return ret;
     }

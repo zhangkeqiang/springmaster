@@ -6,15 +6,10 @@ import org.hibernate.SessionFactory;
 
 import org.apache.logging.log4j.LogManager;  
 import org.apache.logging.log4j.Logger;  
-import org.springframework.stereotype.Repository;
 
-import com.agilejerry.springmaster.entity.GroupBean;
-import com.agilejerry.springmaster.entity.UserBean;
 import com.agilejerry.springmaster.test.UserDaoTest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+
 
 import javax.annotation.Resource;
 
@@ -29,12 +24,6 @@ public abstract class BaseDao{
         this.session = session;
     }
     public Session getSession(){
-//        Session currSession = sessionFactory.getCurrentSession();
-//        if(currSession != null && currSession.isConnected() && currSession.isOpen()){
-//            LOGGER.debug("getCurrentSession");
-//            LOGGER.debug(currSession);
-//            return currSession;
-//        }
         if(session == null){
             session = sessionFactory.openSession();
             LOGGER.debug("open session from null");

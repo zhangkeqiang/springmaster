@@ -1,5 +1,6 @@
 package com.agilejerry.springmaster.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,23 +20,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="TGROUP")
-public class GroupBean implements java.io.Serializable {
+public class GroupBean implements Serializable {
 
 	private static final long serialVersionUID = 6794699691234549462L;
 	private Integer id;
 	private String name;
 	private String type;
+	private Set<UserBean> users = new HashSet<UserBean>(0);
 	
-	
-	
-	public GroupBean(String name) {
-		this.name = name;
-	}
-
-	public GroupBean() {
-	}
-
-
 	@Id
     @GeneratedValue
 	@Column(name="ID", unique=true, nullable=false)
@@ -59,11 +51,12 @@ public class GroupBean implements java.io.Serializable {
 		this.name = name;
 	}
 
+	@Override
 	public String toString(){
 		return "[GROUP]ID:" + this.id +", NAME:" + this.name + ", TYPE:" + this.type;
 	}
 
-	private Set<UserBean> users = new HashSet<UserBean>(0);
+
 	
 //    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups",cascade=(CascadeType.ALL))
 	@ManyToMany(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})

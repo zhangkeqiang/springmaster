@@ -1,5 +1,6 @@
 package com.agilejerry.springmaster.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="ORG")
-public class OrgBean implements java.io.Serializable {
+public class OrgBean implements Serializable {
 
 	private static final long serialVersionUID = -6098017345019583939L;
 	private Integer id;
