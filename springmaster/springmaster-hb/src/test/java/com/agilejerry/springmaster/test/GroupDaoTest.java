@@ -90,7 +90,7 @@ public class GroupDaoTest {
         for(int i=0;i<data.length;i++){
             GroupBean groupA = groupDao.get((int)data[i][0]);            
             UserBean userA = userDao.get((int)data[i][1]);
-            Assert.assertEquals(data[i][2] == GroupDao.DUPLICATED_MEMBER, userDao.isJoined2(userA, groupA));
+            Assert.assertEquals(data[i][2] == GroupDao.DUPLICATED_MEMBER, userDao.checkUserJoinGroup(userA, groupA));
         }
     }
 	@Test 
@@ -114,7 +114,7 @@ public class GroupDaoTest {
 		        for(GroupBean userGroup:groupList){
 		            log.warn(userGroup);
 		        }        
-			    Assert.assertTrue(userDao.isJoined2(userB, groupA));
+			    Assert.assertTrue(userDao.checkUserJoinGroup(userB, groupA));
 			}
 		}
 		
@@ -133,7 +133,7 @@ public class GroupDaoTest {
               for(GroupBean userGroup:groupList){
                   log.warn(userGroup);
               }    
-              Assert.assertFalse(userDao.isJoined2(userC, group));
+              Assert.assertFalse(userDao.checkUserJoinGroup(userC, group));
             }
         }
 	}

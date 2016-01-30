@@ -106,11 +106,13 @@ public class UserDaoTest {
 
 		for(int i=0;i<data.length;i++){
 			GroupBean group = groupDao.get(data[i][0]);
+			Assert.assertNotNull(group);
 			log.warn(group);
 			Session ss = groupDao.getSession();
 //			Session ss = userDao.getSession();
 			UserBean user = (UserBean) ss.get(UserBean.class, data[i][1]);
 			log.warn(user);
+			Assert.assertNotNull(user);
 			Set<GroupBean> groups = user.getGroups();
 			for(GroupBean userGroup:groups){
 				log.warn(userGroup.toString());
@@ -123,7 +125,7 @@ public class UserDaoTest {
 				log.warn(userGroup.toString());
 			}
 			UserBean userB = userDao.get(data[i][1]);
-			boolean isJoined = userDao.isJoined(userB,group);
+			boolean isJoined = userDao.checkUserJoinGroup(userB,group);
 			Assert.assertTrue(isJoined);
 		}
 		
@@ -145,7 +147,7 @@ public class UserDaoTest {
 	                log.warn(userGroup.toString());
 	            }
 	            UserBean userB = userDao.get(data[i][1]);
-	            boolean isJoined = userDao.isJoined(userB,group);
+	            boolean isJoined = userDao.checkUserJoinGroup(userB,group);
 	            Assert.assertFalse(isJoined);
 	          }
 	      }

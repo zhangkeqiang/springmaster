@@ -71,7 +71,7 @@ public class UserDao extends BaseDao{
     }
 
     public int joinGroup(UserBean user, GroupBean group) {
-        if(isJoined(user,group)){
+        if(checkUserJoinGroup(user,group)){
             LOGGER.warn(user.getUserName() +"joined into" + group.getName());
             return GroupDao.DUPLICATED_MEMBER;
         }
@@ -97,15 +97,7 @@ public class UserDao extends BaseDao{
         return sessionFactory.openSession();
     }
 
-    public boolean isJoined(UserBean user, GroupBean group) {
-        Set<GroupBean> groupList = (Set<GroupBean>) user.getGroups();
-        ArrayList<Integer> groupIdList = new ArrayList<Integer>();
-        for(GroupBean userGroup:groupList){
-            LOGGER.warn(userGroup);
-            groupIdList.add(userGroup.getId());
-        }        
-        return groupIdList.contains(group.getId());
-    }
+
 
 
 
@@ -132,7 +124,7 @@ public class UserDao extends BaseDao{
         return ret;
     }
 
-    public boolean isJoined2(UserBean userC, GroupBean group) {
+    public boolean checkUserJoinGroup(UserBean userC, GroupBean group) {
         String hql = "FROM UserBean u JOIN u.groups g WHERE u.id = ? AND g.id = ?";
         org.hibernate.Query q = getSession().createQuery(hql);
         q.setParameter(0, userC.getUserNo());
