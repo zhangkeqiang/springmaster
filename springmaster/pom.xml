@@ -5,7 +5,7 @@
 	<groupId>com.agilejerry</groupId>
 	<artifactId>springmaster</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-<!-- 	<packaging>jar</packaging> -->
+	<!-- <packaging>jar</packaging> -->
 	<packaging>pom</packaging>
 	<name>springmaster</name>
 	<url>http://maven.apache.org</url>
@@ -46,7 +46,12 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter</artifactId> 
 			<version>1.3.1.RELEASE</version> </dependency> <dependency> <groupId>org.springframework.boot</groupId> 

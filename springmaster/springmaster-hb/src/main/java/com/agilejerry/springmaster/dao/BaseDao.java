@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.agilejerry.springmaster.entity.UserBean;
-import com.agilejerry.springmaster.test.UserDaoTest;
 import com.agilejerry.util.GenericUtil;
 
 import java.util.List;

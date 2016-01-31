@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.apache.logging.log4j.LogManager;  
 import org.apache.logging.log4j.Logger;  
 
-import com.agilejerry.springmaster.test.UserDaoTest;
 
 
 
@@ -15,7 +14,7 @@ import javax.annotation.Resource;
 
 
 public abstract class BasicDao{
-    private static final Logger LOGGER = LogManager.getLogger(UserDaoTest.class);
+    private static final Logger LOGGER = LogManager.getLogger(BasicDao.class);
     @Resource
     protected SessionFactory sessionFactory;
     protected Session session;

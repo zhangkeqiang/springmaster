@@ -21,19 +21,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.dao.GroupDao;
 import com.agilejerry.springmaster.dao.UserDaoOld;
-import com.agilejerry.springmaster.dao.UserDao;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
-public class UserDao2Test {
-	private static final Logger log = LogManager.getLogger(UserDao2Test.class);
+public class OldUserDaoTest {
+	private static final Logger log = LogManager.getLogger(OldUserDaoTest.class);
 	@Rule 
 	public TestName testName = new TestName();
-	
 	@Autowired
-	private UserDao userDao;
+	private UserDaoOld userDao;
 	@Autowired 
 	private GroupDao groupDao;
 	@Before
@@ -45,40 +43,25 @@ public class UserDao2Test {
 	public void tearDown(){
 		log.warn(testName.getMethodName() + " end");
 		userDao.closeSession();
+		//clear the changed or added data
+//        for(int i=0;i<data.length;i++){
+//            if(data[i][2] == GroupDao.OK){
+//                // new group member need be removed
+//              GroupBean group = groupDao.get(data[i][0]);
+//              UserBean user = userDao.get(data[i][1]);
+//              int ret = userDao.breakAwayGroup(user, group);
+//            }
+//        }
 	}
 	@Test
 	public void testUserCRUD() {
 		UserBean user =new UserBean();
-		user.setUserName("李珊珊4321");
+		user.setUserName("李珊珊1234");
 		Assert.assertTrue(userDao.create(user) > 0);
 		log.warn(user);
-     	Assert.assertTrue(userDao.delete(user));
+		Assert.assertTrue(userDao.delete(user));
 		
 	}
-	
-   @Test
-    public void test() {
-        UserBean user =new UserBean();
-        user.setUserName("李珊珊");
-        Assert.assertTrue(userDao.create(user) > 0);
-        log.warn(user.toString());
-        Assert.assertTrue(userDao.delete(user));
-    }
-    
-    
-    @Test
-    public void list_show_all_user2() {
-        List<UserBean> list = userDao.list();
-        
-        for(UserBean user:list){
-            log.warn(user.toString());
-            log.warn(user.getOrg());
-            Set<GroupBean> groups = user.getGroups();
-            for(GroupBean group:groups){
-                log.warn(group);
-            }
-        }
-    }
 	
 	@Test
 	public void testcheckAdministrationGroupOfUser(){
@@ -89,11 +72,14 @@ public class UserDao2Test {
 	    for(int i=0;i<userids.length;i++){
 	        UserBean user = (UserBean) userDao.get(userids[i]);
 	        Assert.assertNotNull(user);
-	        Assert.assertTrue(userDao.checkUserJoinAdministrationGroup(user));
+	        Assert.assertTrue(userDao.checkAdministrationGroupOfUser(user));
 	       
 	    }
+	  
+	    
+	    
 	}
-
+	
 	@Test
 	public void list_show_all_user() {
 		List<UserBean> list = userDao.list();		
@@ -122,15 +108,16 @@ public class UserDao2Test {
 			GroupBean group = groupDao.get(data[i][0]);
 			Assert.assertNotNull(group);
 			log.warn(group);
-			userDao.setSession(groupDao.getSession());
-			UserBean user = userDao.get(data[i][1]);
+			Session ss = groupDao.getSession();
+//			Session ss = userDao.getSession();
+			UserBean user = (UserBean) ss.get(UserBean.class, data[i][1]);
 			log.warn(user);
 			Assert.assertNotNull(user);
 			Set<GroupBean> groups = user.getGroups();
 			for(GroupBean userGroup:groups){
 				log.warn(userGroup.toString());
 			}
-
+			userDao.setSession(ss);
 			int ret = userDao.joinGroup(user, group);
 			Assert.assertEquals(data[i][2],ret);
 			log.warn("List groups after join group");
@@ -141,7 +128,6 @@ public class UserDao2Test {
 			boolean isJoined = userDao.checkUserJoinGroup(userB,group);
 			Assert.assertTrue(isJoined);
 		}
-	
 		
 		//clear the changed or added data
 	      for(int i=0;i<data.length;i++){
@@ -167,36 +153,7 @@ public class UserDao2Test {
 	      }
 	}
 	
-	@Test
-	public void testfind_administration_group_of_user(){
-	    String hql = "SELECT u FROM UserBean u JOIN u.groups g WHERE g.type = 'Administration'";
-	    List<UserBean> userList = userDao.list(hql);
-	    for(UserBean user:userList){
-	        log.info(user);
-	    }
-	}
+
 	
-   @Test
-    public void testfind_administration_group_of_user_to_show_name(){
-        //String hql = "SELECT u.userName, g.name FROM UserBean u JOIN u.groups g WHERE g.type = 'Administration'";
-       
-        String hql = "SELECT u.userName FROM UserBean u JOIN u.groups g WHERE g.type = 'Administration'";
-        List userList = userDao.list(hql);
-        for(Object user:userList){
-            log.info(user);
-        }
-    }
-   
-   @Test
-   public void testfind_administration_group_of_user_to_show_names(){
-       String hql = "SELECT u.userName, g.name FROM UserBean u JOIN u.groups g WHERE g.type = 'Administration'";
-       List userList = userDao.list(hql);
-       for(Object ob:userList){
-           Object[] names = (Object[]) ob;
-           log.info(names[0] + "   " + names[1]);
-       }
-   }
+
 }
-
-	
-

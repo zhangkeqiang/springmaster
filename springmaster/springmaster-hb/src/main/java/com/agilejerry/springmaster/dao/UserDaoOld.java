@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
-import com.agilejerry.springmaster.test.UserDaoTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Set;
 public class UserDaoOld extends BasicDao{
     
     public static final String ADMINISTRATION = "Administration";
-    private static final Logger LOGGER = LogManager.getLogger(UserDaoTest.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserDaoOld.class);
     
     public int create(UserBean user){
         getSession().beginTransaction();

@@ -27,7 +27,7 @@ import com.agilejerry.springmaster.entity.UserBean;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
 public class UserDaoTest {
-	private static final Logger log = LogManager.getLogger(UserDaoTest.class);
+	private static final Logger log = LogManager.getLogger(OldUserDaoTest.class);
 	@Rule 
 	public TestName testName = new TestName();
 	

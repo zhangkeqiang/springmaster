@@ -11,9 +11,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
-import com.agilejerry.springmaster.test.UserDaoTest;
+
 
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,10 @@ public class GroupDao  extends BasicDao {
             ret = (int) getSession().save(aGroup);
             getSession().getTransaction().commit();
         }catch(ConstraintViolationException e){
-            ret = -1023;
+            ret = StateCode.ORG_IS_NOT_SET;
+            getSession().getTransaction().rollback();
+            getSession().clear();
+            LOGGER.debug("Clear Session");
             LOGGER.warn(e);
         }
         catch(Exception e){
@@ -60,10 +64,11 @@ public class GroupDao  extends BasicDao {
         return (GroupBean) getSession().get(GroupBean.class, groupId);
     }
 
-    public void delete(GroupBean groupBean) {
+    public int delete(GroupBean groupBean) {
         getSession().beginTransaction();
         getSession().delete(groupBean);
         getSession().getTransaction().commit();
+        return StateCode.OK;
     }
 
     public int addMember(GroupBean group, UserBean userBean) {
