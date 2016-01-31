@@ -84,11 +84,11 @@ public class GroupDaoTest {
 	
 
     int[][] data = {
-            {6, 1, StateCode.DUPLICATED_MEMBER,-1},
-            {1,  1, StateCode.DUPLICATED_MEMBER,-2},
-            {50, 3, StateCode.DUPLICATED_MEMBER,-1},
-            {50, 4, StateCode.DUPLICATED_MEMBER,-1},
-            {1, 2, StateCode.OK,1},
+//            {6, 1, StateCode.DUPLICATED_MEMBER,-1},
+//            {1,  1, StateCode.DUPLICATED_MEMBER,-2},
+//            {50, 3, StateCode.DUPLICATED_MEMBER,-1},
+//            {50, 4, StateCode.DUPLICATED_MEMBER,-1},
+//            {1, 2, StateCode.OK,1},
             {1, 3, StateCode.OK,1}
     };
     
