@@ -77,11 +77,11 @@ public abstract class BaseDao<E>{
             s.beginTransaction();
             s.update(entity);
             s.getTransaction().commit();   
-            ret = GroupDao.OK;
+            ret = GroupDaoOld.OK;
         }catch(org.hibernate.NonUniqueObjectException e){
             s.getTransaction().rollback();
             LOGGER.error(e);
-            ret = GroupDao.DUPLICATED_MEMBER;
+            ret = GroupDaoOld.DUPLICATED_MEMBER;
         }catch(Exception e){
             s.getTransaction().rollback();
             LOGGER.error(e.getMessage() + e.getClass());

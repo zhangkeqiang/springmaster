@@ -27,7 +27,7 @@ public class UserDao extends BaseDao<UserBean> {
     public int joinGroup(UserBean user, GroupBean group) {
         if(checkUserJoinGroup(user,group)){
             LOGGER.warn(user.getUserName() +"has already joined into" + group.getName());
-            return GroupDao.DUPLICATED_MEMBER;
+            return GroupDaoOld.DUPLICATED_MEMBER;
         }
         LOGGER.warn(user.getUserName() +"will join into" + group.getName());
         Set<GroupBean> groupList = user.getGroups();    
@@ -54,7 +54,7 @@ public class UserDao extends BaseDao<UserBean> {
                 break;
             }
         }
-        return GroupDao.OK;
+        return GroupDaoOld.OK;
     }
 
 }

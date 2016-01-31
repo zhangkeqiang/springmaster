@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.agilejerry.springmaster.dao.GroupDao;
+import com.agilejerry.springmaster.dao.GroupDaoOld;
 import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.dao.UserDao;
 import com.agilejerry.springmaster.entity.GroupBean;
@@ -35,7 +35,7 @@ public class UserDaoTest {
 	@Autowired
 	private UserDao userDao;
 	@Autowired 
-	private GroupDao groupDao;
+	private GroupDaoOld groupDao;
 	@Before
 	public void setUp(){
 		log.warn(testName.getMethodName() + " Start...");		
@@ -108,10 +108,10 @@ public class UserDaoTest {
 	}
 	
     int[][] data = {
-            {1,2,GroupDao.OK},
-            {1,3,GroupDao.OK},
-            {1,8,GroupDao.DUPLICATED_MEMBER},
-            {50,8,GroupDao.OK},
+            {1,2,GroupDaoOld.OK},
+            {1,3,GroupDaoOld.OK},
+            {1,8,GroupDaoOld.DUPLICATED_MEMBER},
+            {50,8,GroupDaoOld.OK},
     };
     
 	@Test
@@ -145,7 +145,7 @@ public class UserDaoTest {
 		
 		//clear the changed or added data
 	      for(int i=0;i<data.length;i++){
-	          if(data[i][2] == GroupDao.OK){
+	          if(data[i][2] == GroupDaoOld.OK){
 	              // new group member need be removed
 	            GroupBean group = groupDao.get(data[i][0]);
 	            UserBean user = userDao.get(data[i][1]);

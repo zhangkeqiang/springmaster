@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.agilejerry.springmaster.dao.GroupDao;
+import com.agilejerry.springmaster.dao.GroupDaoOld;
 import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;

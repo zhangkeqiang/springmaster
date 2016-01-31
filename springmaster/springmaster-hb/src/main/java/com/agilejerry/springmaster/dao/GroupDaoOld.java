@@ -22,8 +22,8 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 @Repository
-public class GroupDao  extends BasicDao {
-    private static final Logger LOGGER = LogManager.getLogger(GroupDao.class);
+public class GroupDaoOld  extends BasicDao {
+    private static final Logger LOGGER = LogManager.getLogger(GroupDaoOld.class);
     public static final int DUPLICATED_MEMBER = -2;
 
     public static final int OK = 1;
@@ -94,7 +94,7 @@ public class GroupDao  extends BasicDao {
                 LOGGER.debug("====get members====");
                 users.add(userBean);
                 update(group);
-                ret = GroupDao.OK;
+                ret = GroupDaoOld.OK;
             }
         } catch (Exception e) {
             ret = -99;

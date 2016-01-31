@@ -45,7 +45,7 @@ public abstract class BasicDao{
     
     public void closeSession(){
         LOGGER.debug("close session");
-        if(session!=null)
+        if(session!=null && session.isOpen())
             session.close();
     }
    

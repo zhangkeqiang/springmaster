@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.agilejerry.springmaster.dao.GroupDao;
+import com.agilejerry.springmaster.dao.GroupDaoOld;
 import com.agilejerry.springmaster.dao.OrgDao;
 import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.entity.GroupBean;
@@ -40,14 +40,14 @@ import org.apache.logging.log4j.Logger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
-public class GroupDaoTest {
-	private static final Logger log = LogManager.getLogger(GroupDaoTest.class);
+public class GroupDaoOldTest {
+	private static final Logger log = LogManager.getLogger(GroupDaoOldTest.class);
 	
    @Resource
     private SessionFactory sessionFactory;
 	   
 	@Autowired 
-	private GroupDao groupDao;
+	private GroupDaoOld groupDao;
 	@Autowired
 	private UserDaoOld userDao;
     @Autowired
@@ -81,12 +81,12 @@ public class GroupDaoTest {
 	
 
     int[][] data = {
-            {6, 1, GroupDao.DUPLICATED_MEMBER,-1},
-            {1,  1, GroupDao.DUPLICATED_MEMBER,-2},
-            {50, 3, GroupDao.DUPLICATED_MEMBER,-1},
-            {50, 4, GroupDao.DUPLICATED_MEMBER,-1},
-            {1, 2, GroupDao.OK,1},
-            {1, 3, GroupDao.OK,1}
+            {6, 1, GroupDaoOld.DUPLICATED_MEMBER,-1},
+            {1,  1, GroupDaoOld.DUPLICATED_MEMBER,-2},
+            {50, 3, GroupDaoOld.DUPLICATED_MEMBER,-1},
+            {50, 4, GroupDaoOld.DUPLICATED_MEMBER,-1},
+            {1, 2, GroupDaoOld.OK,1},
+            {1, 3, GroupDaoOld.OK,1}
     };
     
     @Test
@@ -95,7 +95,7 @@ public class GroupDaoTest {
         for(int i=0;i<data.length;i++){
             GroupBean groupA = groupDao.get((int)data[i][0]);            
             UserBean userA = userDao.get((int)data[i][1]);
-            Assert.assertEquals(data[i][2] == GroupDao.DUPLICATED_MEMBER, userDao.checkUserJoinGroup(userA, groupA));
+            Assert.assertEquals(data[i][2] == GroupDaoOld.DUPLICATED_MEMBER, userDao.checkUserJoinGroup(userA, groupA));
         }
     }
 	@Test 
@@ -108,7 +108,7 @@ public class GroupDaoTest {
 			log.info(userA);
 			Assert.assertEquals((int)data[i][3], groupDao.addMember(groupA, userA));
 			
-			if(data[i][3]!= GroupDao.HAVE_ADMINISTRATION_GROUP){
+			if(data[i][3]!= GroupDaoOld.HAVE_ADMINISTRATION_GROUP){
 			    Set<UserBean> members = groupA.getUsers();
 			    for(UserBean member: members){
 			        log.info(member);
@@ -124,7 +124,7 @@ public class GroupDaoTest {
 		}
 		
         for(int i=0;i<data.length;i++){
-            if(data[i][3] == GroupDao.OK){
+            if(data[i][3] == GroupDaoOld.OK){
               // new group member need be removed
               GroupBean group = groupDao.get(data[i][0]);
               UserBean user = userDao.get(data[i][1]);
@@ -162,6 +162,12 @@ public class GroupDaoTest {
 		
 	   
 	}
+	
+	
+   @Test
+    public void member_in_admininstration_group_should_belong_to_same_org_as_the_group(){
+        
+    }
 	
 	
 

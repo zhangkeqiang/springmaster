@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.agilejerry.springmaster.dao.GroupDao;
+import com.agilejerry.springmaster.dao.GroupDaoOld;
 import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -33,10 +33,11 @@ public class OldUserDaoTest {
 	@Autowired
 	private UserDaoOld userDao;
 	@Autowired 
-	private GroupDao groupDao;
+	private GroupDaoOld groupDao;
 	@Before
 	public void setUp(){
-		log.warn(testName.getMethodName() + " Start...");		
+		log.warn(testName.getMethodName() + " Start...");	
+		userDao.getSession().clear();
 	}
 	
 	@After
@@ -65,12 +66,14 @@ public class OldUserDaoTest {
 	
 	@Test
 	public void testcheckAdministrationGroupOfUser(){
+	    //userDao.setSession(groupDao.getSession());
 	    int[] userids = {2,
 	            3,
 	            4
 	            };
 	    for(int i=0;i<userids.length;i++){
 	        UserBean user = (UserBean) userDao.get(userids[i]);
+	        log.info(user.getUserName());
 	        Assert.assertNotNull(user);
 	        Assert.assertTrue(userDao.checkAdministrationGroupOfUser(user));
 	       
@@ -94,10 +97,10 @@ public class OldUserDaoTest {
 	}
 	
     int[][] data = {
-            {1,2,GroupDao.OK},
-            {1,3,GroupDao.OK},
-            {1,8,GroupDao.DUPLICATED_MEMBER},
-            {50,8,GroupDao.OK},
+            {1,2,GroupDaoOld.OK},
+            {1,3,GroupDaoOld.OK},
+            {1,8,GroupDaoOld.DUPLICATED_MEMBER},
+            {50,8,GroupDaoOld.OK},
     };
     
 	@Test
@@ -131,7 +134,7 @@ public class OldUserDaoTest {
 		
 		//clear the changed or added data
 	      for(int i=0;i<data.length;i++){
-	          if(data[i][2] == GroupDao.OK){
+	          if(data[i][2] == GroupDaoOld.OK){
 	              // new group member need be removed
 	            GroupBean group = groupDao.get(data[i][0]);
 	            UserBean user = userDao.get(data[i][1]);

@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.StateCode;
-import com.agilejerry.springmaster.dao.GroupDao;
+import com.agilejerry.springmaster.dao.GroupDaoOld;
 import com.agilejerry.springmaster.dao.OrgDao;
 import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.dao.UserDao;
@@ -43,7 +43,7 @@ public class OrgDaoTest {
 	@Autowired
     private UserDaoOld userDao;
 	@Autowired
-	private GroupDao groupDao;
+	private GroupDaoOld groupDao;
 	@Before
 	public void setUp(){
 		LOGGER.warn(testName.getMethodName() + " Start...");		
@@ -125,10 +125,7 @@ public class OrgDaoTest {
 	    }
 	}
 	
-	@Test
-	public void member_in_admininstration_group_should_belong_to_same_org_as_the_group(){
-	    
-	}
+
 	
 	   @Test
 	    public void an_administration_group_must_belong_to_an_org2(){

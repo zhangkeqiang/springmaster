@@ -56,8 +56,8 @@ public class UserDaoOld extends BasicDao{
     }
 
     public boolean checkAdministrationGroupOfUser(UserBean userBean) {
-        UserBean user = get(userBean.getUserNo());
-        Set<GroupBean> groups = user.getGroups();
+        //UserBean user = get(userBean.getUserNo());
+        Set<GroupBean> groups = userBean.getGroups();
         for(GroupBean group:groups){
             if(group.getType().equals(ADMINISTRATION)){
                 return true;
@@ -69,7 +69,7 @@ public class UserDaoOld extends BasicDao{
     public int joinGroup(UserBean user, GroupBean group) {
         if(checkUserJoinGroup(user,group)){
             LOGGER.warn(user.getUserName() +"joined into" + group.getName());
-            return GroupDao.DUPLICATED_MEMBER;
+            return GroupDaoOld.DUPLICATED_MEMBER;
         }
         LOGGER.warn(user.getUserName() +"will join into" + group.getName());
         Set<GroupBean> groupList = user.getGroups();    
@@ -87,7 +87,7 @@ public class UserDaoOld extends BasicDao{
                 break;
             }
         }
-        return GroupDao.OK;
+        return GroupDaoOld.OK;
     }
     private Session getNewSession() {        
         return sessionFactory.openSession();
@@ -104,13 +104,13 @@ public class UserDaoOld extends BasicDao{
             s.beginTransaction();
             s.update(user);
             s.getTransaction().commit();   
-            ret = GroupDao.OK;
+            ret = GroupDaoOld.OK;
         }catch(org.hibernate.NonUniqueObjectException e){
             s.getTransaction().rollback();
             LOGGER.warn(user.getUserName() +"has already joined that group");
             LOGGER.warn(e.getMessage());
             LOGGER.error(e);
-            ret = GroupDao.DUPLICATED_MEMBER;
+            ret = GroupDaoOld.DUPLICATED_MEMBER;
         }catch(Exception e){
             s.getTransaction().rollback();
             LOGGER.error(e.getMessage() + e.getClass());
