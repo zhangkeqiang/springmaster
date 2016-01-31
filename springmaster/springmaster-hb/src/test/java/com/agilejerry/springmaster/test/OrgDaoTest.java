@@ -21,8 +21,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.dao.GroupDao;
 import com.agilejerry.springmaster.dao.OrgDao;
+import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.dao.UserDao;
-import com.agilejerry.springmaster.dao.UserDao2;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -37,7 +37,9 @@ public class OrgDaoTest {
 	@Autowired
 	private OrgDao dao;
 	@Autowired
-    private UserDao userDao;
+    private UserDaoOld userDao;
+	@Autowired
+	private GroupDao groupDao;
 	@Before
 	public void setUp(){
 		LOGGER.warn(testName.getMethodName() + " Start...");		
@@ -79,6 +81,21 @@ public class OrgDaoTest {
 	    Assert.assertEquals(org.getName(), userB.getOrg().getName());	    
 	    userB.setOrg(userOldOrg);
 	    userDao.update(userB);
+	}
+	
+	@Test
+	public void an_administration_group_must_belong_to_an_org(){
+	    GroupBean group = new GroupBean();
+	    group.setName("企划组");
+	    group.setType("Administration");
+	    int ret;
+	    try{
+	        ret = groupDao.create(group);
+	        Assert.assertEquals(-3, ret);
+	    }catch(Exception e){
+	        Assert.assertTrue(false);
+	        LOGGER.error(e);
+	    }
 	}
 	
 	

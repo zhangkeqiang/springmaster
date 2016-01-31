@@ -29,7 +29,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.dao.GroupDao;
-import com.agilejerry.springmaster.dao.UserDao;
+import com.agilejerry.springmaster.dao.OrgDao;
+import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -48,7 +49,9 @@ public class GroupDaoTest {
 	@Autowired 
 	private GroupDao groupDao;
 	@Autowired
-	private UserDao userDao;	
+	private UserDaoOld userDao;
+    @Autowired
+    private OrgDao orgDao;    
 	@Rule 
 	public TestName testName = new TestName();
 	@Before
@@ -62,6 +65,8 @@ public class GroupDaoTest {
 		GroupBean groupA = new GroupBean();
 		groupA.setName("销售2组");
 		groupA.setType("Administration");
+		groupA.setOrg(orgDao.getDefault());
+		groupDao.setSession(orgDao.getSession());
 		int aGroupID = groupDao.create(groupA);
 		Assert.assertTrue(aGroupID>1);
 		groupA.setType("Administration");

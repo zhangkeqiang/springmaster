@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.dao.UserDao;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -29,40 +30,21 @@ public class UserDaoTest {
 	private static final Logger log = LogManager.getLogger(UserDaoTest.class);
 	@Rule 
 	public TestName testName = new TestName();
-	@Autowired
-	private UserDao dao;
 	
 	@Before
 	public void setUp(){
-		log.warn(testName.getMethodName() + " Start...");		
+		log.warn(testName.getMethodName() + " Start...");
 	}
 	
 	@After
 	public void tearDown(){
 		log.warn(testName.getMethodName() + " end");
+		//dao.closeSession();
 	}
+
 	@Test
-	public void test() {
-		UserBean user =new UserBean();
-		user.setUserName("李珊珊");
-		Assert.assertTrue(dao.create(user) > 0);
-		log.warn(user.toString());
-		Assert.assertTrue(dao.delete(user));
-	}
-	
-	
-	@Test
-	public void list_show_all_user() {
-		List<UserBean> list = dao.list();
-		
-		for(UserBean user:list){
-			log.warn(user.toString());
-			log.warn(user.getOrg());
-			Set<GroupBean> groups = user.getGroups();
-			for(GroupBean group:groups){
-				log.warn(group.toString());
-			}
-		}
+	public void test(){
+	    
 	}
 	
 	

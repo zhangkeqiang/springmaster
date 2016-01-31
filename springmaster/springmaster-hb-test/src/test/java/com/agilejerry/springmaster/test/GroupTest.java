@@ -21,9 +21,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.agilejerry.springmaster.dao.OrgDao;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -39,7 +41,8 @@ public class GroupTest {
 	@Resource
 	private SessionFactory sessionFactory;
 	private Session ss;
-	
+    @Autowired
+    private OrgDao orgDao; 
 	@Before
 	public void setUp(){
 		ss = sessionFactory.openSession();
@@ -49,6 +52,7 @@ public class GroupTest {
 		GroupBean group1 = new GroupBean();
 		group1.setName("生产队");
 		group1.setType("Administration");
+		group1.setOrg(orgDao.getDefault());
 		Serializable id = ss.save(group1);
 		System.out.println("Save result Serializable is " + id);
 		System.out.println(group1);

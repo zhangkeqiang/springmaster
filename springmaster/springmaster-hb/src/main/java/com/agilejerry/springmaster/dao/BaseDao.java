@@ -30,12 +30,12 @@ public abstract class BaseDao<E>{
         try {
             clazz = GenericUtil.getActualClass(this.getClass(), 0);
         } catch (Exception e) {
-            LOGGER.error("base dao can not get  clazz!", e);
+            LOGGER.error("base dao can not get clazz!", e);
         }
     }
     
 
-    public void save(E entity) throws Exception {
+    public void save(E entity){
         this.getSession().saveOrUpdate(entity);
     }
 
@@ -105,7 +105,7 @@ public abstract class BaseDao<E>{
             LOGGER.debug("open session from null");
             return session;
         }
-        if(session.isConnected()){
+        if(session.isConnected() && session.isOpen()){
             LOGGER.debug("existed session");
         }else{
             LOGGER.debug("open session from not connected");

@@ -13,6 +13,10 @@ import com.agilejerry.springmaster.entity.UserBean;
 @Repository
 public class OrgDao extends BaseDao<OrgBean> {
     private static final Logger LOGGER = LogManager.getLogger(OrgDao.class);
+
+    public OrgBean getDefault() {
+        return get(1);
+    }
    
 
 }

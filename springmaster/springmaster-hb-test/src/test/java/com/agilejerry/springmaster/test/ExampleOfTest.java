@@ -28,7 +28,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.dao.GroupDao;
-import com.agilejerry.springmaster.dao.UserDao;
+import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;

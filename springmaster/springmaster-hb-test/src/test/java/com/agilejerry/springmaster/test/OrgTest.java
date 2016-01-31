@@ -81,6 +81,7 @@ public class OrgTest {
 	}
 	@After
 	public void tearDown(){
+	    ss.clear();
 		ss.close();
 	}
 }

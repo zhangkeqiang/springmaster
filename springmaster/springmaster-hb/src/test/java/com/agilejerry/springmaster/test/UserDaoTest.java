@@ -20,7 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.dao.GroupDao;
-import com.agilejerry.springmaster.dao.UserDao;
+import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
@@ -31,7 +31,7 @@ public class UserDaoTest {
 	@Rule 
 	public TestName testName = new TestName();
 	@Autowired
-	private UserDao userDao;
+	private UserDaoOld userDao;
 	@Autowired 
 	private GroupDao groupDao;
 	@Before

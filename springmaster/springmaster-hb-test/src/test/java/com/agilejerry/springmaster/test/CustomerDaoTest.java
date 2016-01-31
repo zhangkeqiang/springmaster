@@ -146,6 +146,7 @@ public class CustomerDaoTest {
 		System.out.println(xiaoming.getName());
 		System.out.println(xiaoming.getCustomerBean().getUsername());
 	}
+	
 	@After
 	public void clear(){
 		session.close();

@@ -20,8 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.dao.GroupDao;
+import com.agilejerry.springmaster.dao.UserDaoOld;
 import com.agilejerry.springmaster.dao.UserDao;
-import com.agilejerry.springmaster.dao.UserDao2;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
@@ -33,7 +33,7 @@ public class UserDao2Test {
 	public TestName testName = new TestName();
 	
 	@Autowired
-	private UserDao2 userDao;
+	private UserDao userDao;
 	@Autowired 
 	private GroupDao groupDao;
 	@Before
@@ -55,6 +55,30 @@ public class UserDao2Test {
      	Assert.assertTrue(userDao.delete(user));
 		
 	}
+	
+   @Test
+    public void test() {
+        UserBean user =new UserBean();
+        user.setUserName("李珊珊");
+        Assert.assertTrue(userDao.create(user) > 0);
+        log.warn(user.toString());
+        Assert.assertTrue(userDao.delete(user));
+    }
+    
+    
+    @Test
+    public void list_show_all_user2() {
+        List<UserBean> list = userDao.list();
+        
+        for(UserBean user:list){
+            log.warn(user.toString());
+            log.warn(user.getOrg());
+            Set<GroupBean> groups = user.getGroups();
+            for(GroupBean group:groups){
+                log.warn(group);
+            }
+        }
+    }
 	
 	@Test
 	public void testcheckAdministrationGroupOfUser(){

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
@@ -29,13 +30,23 @@ public class GroupDao  extends BasicDao {
     public static final int HAVE_ADMINISTRATION_GROUP = -1;
 
     @Autowired
-    private UserDao userDao;
+    private UserDaoOld userDao;
 
 
-    public int create(GroupBean aGroup) {
+    public int create(GroupBean aGroup){
         getSession().beginTransaction();
-        int ret = (int) getSession().save(aGroup);
-        getSession().getTransaction().commit();
+        int ret = 0;
+        try{
+            ret = (int) getSession().save(aGroup);
+            getSession().getTransaction().commit();
+        }catch(ConstraintViolationException e){
+            ret = -1023;
+            LOGGER.warn(e);
+        }
+        catch(Exception e){
+            ret = -99;
+            LOGGER.warn(e);
+        }
         return ret;
     }
 
