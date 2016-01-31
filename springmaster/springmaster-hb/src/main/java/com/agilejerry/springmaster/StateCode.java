@@ -5,6 +5,8 @@ public class StateCode {
     public static final int OK = 1;
     public static final int DUPLICATED_MEMBER = -2;
     public static final int HAVE_ADMINISTRATION_GROUP = -1;
+    public static final int NULL = 0;
+    public static final int NOT_ADMINISTRATION_GROUP = -101;
     private StateCode(){
         //hide the public constructor
     }

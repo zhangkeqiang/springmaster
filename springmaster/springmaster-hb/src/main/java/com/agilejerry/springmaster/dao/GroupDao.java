@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 @Repository
 public class GroupDao  extends BaseDao<GroupBean> {
     @Autowired
-    private UserDao userDao;
+    protected UserDao userDao;
     private static final Logger LOGGER = LogManager.getLogger(GroupDao.class);
     public static final int DUPLICATED_MEMBER = -2;
 
@@ -66,7 +66,7 @@ public class GroupDao  extends BaseDao<GroupBean> {
         return ret;
     }
 
-    private boolean checkContains(GroupBean groupBean, UserBean userBean) {
+    public boolean checkContains(GroupBean groupBean, UserBean userBean) {
         String hql = "FROM GroupBean g join g.users u WHERE u.userNo = :UserNo AND g.id = :GroupId";
         Query q = getSession().createQuery(hql);
         q.setInteger("UserNo", userBean.getUserNo());

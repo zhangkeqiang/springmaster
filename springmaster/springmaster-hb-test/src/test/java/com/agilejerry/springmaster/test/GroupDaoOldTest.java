@@ -28,6 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.agilejerry.springmaster.Const;
+import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.dao.GroupDaoOld;
 import com.agilejerry.springmaster.dao.OrgDao;
 import com.agilejerry.springmaster.dao.UserDaoOld;
@@ -81,12 +83,12 @@ public class GroupDaoOldTest {
 	
 
     int[][] data = {
-            {6, 1, GroupDaoOld.DUPLICATED_MEMBER,-1},
-            {1,  1, GroupDaoOld.DUPLICATED_MEMBER,-2},
-            {50, 3, GroupDaoOld.DUPLICATED_MEMBER,-1},
-            {50, 4, GroupDaoOld.DUPLICATED_MEMBER,-1},
-            {1, 2, GroupDaoOld.OK,1},
-            {1, 3, GroupDaoOld.OK,1}
+            {6, 1, StateCode.DUPLICATED_MEMBER,-1},
+            {1,  1, StateCode.DUPLICATED_MEMBER,-2},
+            {50, 3, StateCode.DUPLICATED_MEMBER,-1},
+            {50, 4, StateCode.DUPLICATED_MEMBER,-1},
+            {1, 2, StateCode.OK,1},
+            {1, 3, StateCode.OK,1}
     };
     
     @Test
@@ -95,7 +97,7 @@ public class GroupDaoOldTest {
         for(int i=0;i<data.length;i++){
             GroupBean groupA = groupDao.get((int)data[i][0]);            
             UserBean userA = userDao.get((int)data[i][1]);
-            Assert.assertEquals(data[i][2] == GroupDaoOld.DUPLICATED_MEMBER, userDao.checkUserJoinGroup(userA, groupA));
+            Assert.assertEquals(data[i][2] == StateCode.DUPLICATED_MEMBER, userDao.checkUserJoinGroup(userA, groupA));
         }
     }
 	@Test 
@@ -108,7 +110,7 @@ public class GroupDaoOldTest {
 			log.info(userA);
 			Assert.assertEquals((int)data[i][3], groupDao.addMember(groupA, userA));
 			
-			if(data[i][3]!= GroupDaoOld.HAVE_ADMINISTRATION_GROUP){
+			if(data[i][3]!= StateCode.HAVE_ADMINISTRATION_GROUP){
 			    Set<UserBean> members = groupA.getUsers();
 			    for(UserBean member: members){
 			        log.info(member);
@@ -124,7 +126,7 @@ public class GroupDaoOldTest {
 		}
 		
         for(int i=0;i<data.length;i++){
-            if(data[i][3] == GroupDaoOld.OK){
+            if(data[i][3] == StateCode.OK){
               // new group member need be removed
               GroupBean group = groupDao.get(data[i][0]);
               UserBean user = userDao.get(data[i][1]);

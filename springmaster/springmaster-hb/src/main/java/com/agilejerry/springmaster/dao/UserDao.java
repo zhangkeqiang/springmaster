@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.agilejerry.springmaster.Const;
 import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -13,12 +14,12 @@ import com.agilejerry.springmaster.entity.UserBean;
 @Repository
 public class UserDao extends BaseDao<UserBean> {
     private static final Logger LOGGER = LogManager.getLogger(BaseDao.class);
-    private static final String ADMINISTRATION = "Administration";;
+
 
     public boolean checkUserJoinAdministrationGroup(UserBean user) {
         Set<GroupBean> groups = user.getGroups();
         for(GroupBean group:groups){
-            if(group.getType().equals(ADMINISTRATION)){
+            if(group.getType().equals(Const.ADMINISTRATION)){
                 return true;
             }
         }
@@ -56,6 +57,16 @@ public class UserDao extends BaseDao<UserBean> {
             }
         }
         return StateCode.OK;
+    }
+
+    public GroupBean getAdministrationGroup(UserBean user) {
+        Set<GroupBean> groups = user.getGroups();
+        for(GroupBean group:groups){
+            if(group.getType().equals(Const.ADMINISTRATION)){
+                return group;
+            }
+        }
+        return null;
     }
 
 }
