@@ -57,7 +57,7 @@ public class UserBean implements Serializable {
 
     @Override
     public String toString(){
-        return "[User]NO:" + this.userNo +", NAME=" + this.userName;
+        return "[User]NO:" + this.userNo +", NAME=" + this.userName +", ORG=" + this.org.getName();
     }
 
 

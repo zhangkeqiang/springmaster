@@ -28,9 +28,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.agilejerry.springmaster.dao.GroupDaoOld;
+import com.agilejerry.springmaster.StateCode;
+import com.agilejerry.springmaster.dao.GroupDao;
+
 import com.agilejerry.springmaster.dao.OrgDao;
-import com.agilejerry.springmaster.dao.UserDaoOld;
+import com.agilejerry.springmaster.dao.UserDao;
+
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
@@ -40,23 +43,23 @@ import org.apache.logging.log4j.Logger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
-public class GroupDaoOldTest {
-	private static final Logger log = LogManager.getLogger(GroupDaoOldTest.class);
+public class GroupDaoTest {
+	private static final Logger LOGGER = LogManager.getLogger(GroupDaoTest.class);
 	
    @Resource
     private SessionFactory sessionFactory;
 	   
 	@Autowired 
-	private GroupDaoOld groupDao;
+	private GroupDao groupDao;
 	@Autowired
-	private UserDaoOld userDao;
+	private UserDao userDao;
     @Autowired
     private OrgDao orgDao;    
 	@Rule 
 	public TestName testName = new TestName();
 	@Before
 	public void setUp(){
-		log.warn(testName.getMethodName() + " Start...");
+		LOGGER.warn(testName.getMethodName() + " Start...");
 		Assert.assertNotNull(groupDao);
 	}
 	@Test
@@ -81,12 +84,12 @@ public class GroupDaoOldTest {
 	
 
     int[][] data = {
-            {6, 1, GroupDaoOld.DUPLICATED_MEMBER,-1},
-            {1,  1, GroupDaoOld.DUPLICATED_MEMBER,-2},
-            {50, 3, GroupDaoOld.DUPLICATED_MEMBER,-1},
-            {50, 4, GroupDaoOld.DUPLICATED_MEMBER,-1},
-            {1, 2, GroupDaoOld.OK,1},
-            {1, 3, GroupDaoOld.OK,1}
+            {6, 1, StateCode.DUPLICATED_MEMBER,-1},
+            {1,  1, StateCode.DUPLICATED_MEMBER,-2},
+            {50, 3, StateCode.DUPLICATED_MEMBER,-1},
+            {50, 4, StateCode.DUPLICATED_MEMBER,-1},
+            {1, 2, StateCode.OK,1},
+            {1, 3, StateCode.OK,1}
     };
     
     @Test
@@ -95,7 +98,7 @@ public class GroupDaoOldTest {
         for(int i=0;i<data.length;i++){
             GroupBean groupA = groupDao.get((int)data[i][0]);            
             UserBean userA = userDao.get((int)data[i][1]);
-            Assert.assertEquals(data[i][2] == GroupDaoOld.DUPLICATED_MEMBER, userDao.checkUserJoinGroup(userA, groupA));
+            Assert.assertEquals(data[i][2] == StateCode.DUPLICATED_MEMBER, userDao.checkUserJoinGroup(userA, groupA));
         }
     }
 	@Test 
@@ -104,39 +107,39 @@ public class GroupDaoOldTest {
 			GroupBean groupA = groupDao.get((int)data[i][0]);
 			userDao.setSession(groupDao.getSession());
 			UserBean userA = userDao.get((int)data[i][1]);
-			log.info(groupA);
-			log.info(userA);
+			LOGGER.info(groupA);
+			LOGGER.info(userA);
 			Assert.assertEquals((int)data[i][3], groupDao.addMember(groupA, userA));
 			
-			if(data[i][3]!= GroupDaoOld.HAVE_ADMINISTRATION_GROUP){
+			if(data[i][3]!= StateCode.HAVE_ADMINISTRATION_GROUP){
 			    Set<UserBean> members = groupA.getUsers();
 			    for(UserBean member: members){
-			        log.info(member);
+			        LOGGER.info(member);
 			    }
 			    UserBean userB = userDao.get(userA.getUserNo());
 			    Set<GroupBean> groupList = (Set<GroupBean>) userB.getGroups();
 		        
 		        for(GroupBean userGroup:groupList){
-		            log.warn(userGroup);
+		            LOGGER.warn(userGroup);
 		        }        
 			    Assert.assertTrue(userDao.checkUserJoinGroup(userB, groupA));
 			}
 		}
 		
         for(int i=0;i<data.length;i++){
-            if(data[i][3] == GroupDaoOld.OK){
+            if(data[i][3] == StateCode.OK){
               // new group member need be removed
               GroupBean group = groupDao.get(data[i][0]);
               UserBean user = userDao.get(data[i][1]);
               groupDao.removeMember(group, user);
               Set<UserBean> members = group.getUsers();
               for(UserBean member: members){
-                  log.info(member);
+                  LOGGER.info(member);
               }
               UserBean userC = userDao.get(data[i][1]);
               Set<GroupBean> groupList = (Set<GroupBean>) userC.getGroups();              
               for(GroupBean userGroup:groupList){
-                  log.warn(userGroup);
+                  LOGGER.warn(userGroup);
               }    
               Assert.assertFalse(userDao.checkUserJoinGroup(userC, group));
             }
@@ -145,7 +148,7 @@ public class GroupDaoOldTest {
 	
 	@Test
 	public void group_users_can_be_get(){
-		log.warn(testName.getMethodName());
+		LOGGER.warn(testName.getMethodName());
 //		GroupBean groupA = groupDao.get(50);
 //		Set<UserBean> users = groupDao.getUsers(groupA);
 		
@@ -156,8 +159,8 @@ public class GroupDaoOldTest {
        
         
 		for(UserBean user: users){
-			log.warn(user.toString());
-			log.warn(user.getOrg().toString());
+			LOGGER.warn(user.toString());
+			LOGGER.warn(user.getOrg().toString());
 		}
 		
 	   
@@ -166,7 +169,22 @@ public class GroupDaoOldTest {
 	
    @Test
     public void member_in_admininstration_group_should_belong_to_same_org_as_the_group(){
-        
+        //TODO member check administration 
+       orgDao.setSession(groupDao.getSession());
+       OrgBean org1 = orgDao.get(1);
+       List<GroupBean> adminGroupList = orgDao.listAdministrationGroup(org1);
+       Assert.assertNotNull(adminGroupList);
+       for(GroupBean group:adminGroupList){
+           LOGGER.warn("=====Group info====");
+           LOGGER.warn(group);
+           Assert.assertEquals("Administration", group.getType());
+           Set<UserBean> users = group.getUsers();
+           for(UserBean user:users){
+               LOGGER.warn(user);
+               Assert.assertEquals(true,orgDao.contains(org1,user));
+
+           }
+       }
     }
 	
 	
@@ -176,16 +194,7 @@ public class GroupDaoOldTest {
 	
 	@After
 	public void tearDown(){
-		log.warn(testName.getMethodName() + " end");
-	      //clear the changed or added data
-/*        for(int i=0;i<data.length;i++){
-            if(data[i][2] == GroupDao.OK){
-                // new group member need be removed
-              GroupBean group = groupDao.get(data[i][0]);
-              UserBean user = userDao.get(data[i][1]);
-              userDao.breakAwayGroup(user, group);
-            }
-        }*/
+		LOGGER.warn(testName.getMethodName() + " end");
 		groupDao.closeSession();
 	}
 }

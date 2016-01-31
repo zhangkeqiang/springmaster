@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;  
 import org.springframework.stereotype.Repository;
 
+import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
@@ -69,7 +70,7 @@ public class UserDaoOld extends BasicDao{
     public int joinGroup(UserBean user, GroupBean group) {
         if(checkUserJoinGroup(user,group)){
             LOGGER.warn(user.getUserName() +"joined into" + group.getName());
-            return GroupDaoOld.DUPLICATED_MEMBER;
+            return StateCode.DUPLICATED_MEMBER;
         }
         LOGGER.warn(user.getUserName() +"will join into" + group.getName());
         Set<GroupBean> groupList = user.getGroups();    
@@ -87,7 +88,7 @@ public class UserDaoOld extends BasicDao{
                 break;
             }
         }
-        return GroupDaoOld.OK;
+        return StateCode.OK;
     }
     private Session getNewSession() {        
         return sessionFactory.openSession();
@@ -104,13 +105,13 @@ public class UserDaoOld extends BasicDao{
             s.beginTransaction();
             s.update(user);
             s.getTransaction().commit();   
-            ret = GroupDaoOld.OK;
+            ret = StateCode.OK;
         }catch(org.hibernate.NonUniqueObjectException e){
             s.getTransaction().rollback();
             LOGGER.warn(user.getUserName() +"has already joined that group");
             LOGGER.warn(e.getMessage());
             LOGGER.error(e);
-            ret = GroupDaoOld.DUPLICATED_MEMBER;
+            ret = StateCode.DUPLICATED_MEMBER;
         }catch(Exception e){
             s.getTransaction().rollback();
             LOGGER.error(e.getMessage() + e.getClass());

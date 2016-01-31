@@ -22,50 +22,17 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 @Repository
-public class GroupDaoOld  extends BasicDao {
-    private static final Logger LOGGER = LogManager.getLogger(GroupDaoOld.class);
-
-
+public class GroupDao  extends BaseDao<GroupBean> {
     @Autowired
-    private UserDaoOld userDao;
+    private UserDao userDao;
+    private static final Logger LOGGER = LogManager.getLogger(GroupDao.class);
+    public static final int DUPLICATED_MEMBER = -2;
+
+    public static final int OK = 1;
+
+    public static final int HAVE_ADMINISTRATION_GROUP = -1;
 
 
-    public int create(GroupBean aGroup){
-        getSession().beginTransaction();
-        int ret = 0;
-        try{
-            ret = (int) getSession().save(aGroup);
-            getSession().getTransaction().commit();
-        }catch(ConstraintViolationException e){
-            ret = StateCode.ORG_IS_NOT_SET;
-            getSession().getTransaction().rollback();
-            getSession().clear();
-            LOGGER.debug("Clear Session");
-            LOGGER.warn(e);
-        }
-        catch(Exception e){
-            ret = -99;
-            LOGGER.warn(e);
-        }
-        return ret;
-    }
-
-    public void update(GroupBean aGroup) {
-        getSession().beginTransaction();
-        getSession().update(aGroup);
-        getSession().getTransaction().commit();
-    }
-
-    public GroupBean get(int groupId) {
-        return (GroupBean) getSession().get(GroupBean.class, groupId);
-    }
-
-    public int delete(GroupBean groupBean) {
-        getSession().beginTransaction();
-        getSession().delete(groupBean);
-        getSession().getTransaction().commit();
-        return StateCode.OK;
-    }
 
     public int addMember(GroupBean group, UserBean userBean) {
         Session ss = getSession(); 
@@ -73,15 +40,15 @@ public class GroupDaoOld  extends BasicDao {
         try {
             if (group.getType().equals("Administration")) {
                 userDao.setSession(getSession());
-                if (userDao.checkAdministrationGroupOfUser(userBean)) {
+                if (userDao.checkUserJoinAdministrationGroup(userBean)) {
                     LOGGER.debug("====HAVE_ADMINISTRATION_GROUP====");
-                    return StateCode.HAVE_ADMINISTRATION_GROUP;
+                    return HAVE_ADMINISTRATION_GROUP;
                 }
             }
             LOGGER.debug("NOT_ADMINISTRATION_GROUP");
             if (checkContains(group, userBean)){
                 LOGGER.debug("====duplicated====");
-                return StateCode.DUPLICATED_MEMBER;
+                return DUPLICATED_MEMBER;
             }
             else {
                // add group member
@@ -90,7 +57,7 @@ public class GroupDaoOld  extends BasicDao {
                 LOGGER.debug("====get members====");
                 users.add(userBean);
                 update(group);
-                ret = StateCode.OK;
+                ret = GroupDao.OK;
             }
         } catch (Exception e) {
             ret = -99;

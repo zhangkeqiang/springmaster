@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
@@ -27,7 +28,7 @@ public class UserDao extends BaseDao<UserBean> {
     public int joinGroup(UserBean user, GroupBean group) {
         if(checkUserJoinGroup(user,group)){
             LOGGER.warn(user.getUserName() +"has already joined into" + group.getName());
-            return GroupDaoOld.DUPLICATED_MEMBER;
+            return StateCode.DUPLICATED_MEMBER;
         }
         LOGGER.warn(user.getUserName() +"will join into" + group.getName());
         Set<GroupBean> groupList = user.getGroups();    
@@ -54,7 +55,7 @@ public class UserDao extends BaseDao<UserBean> {
                 break;
             }
         }
-        return GroupDaoOld.OK;
+        return StateCode.OK;
     }
 
 }

@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.apache.logging.log4j.LogManager;  
 import org.apache.logging.log4j.Logger;
 
+import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.entity.UserBean;
 import com.agilejerry.util.GenericUtil;
 
@@ -77,11 +78,11 @@ public abstract class BaseDao<E>{
             s.beginTransaction();
             s.update(entity);
             s.getTransaction().commit();   
-            ret = GroupDaoOld.OK;
+            ret = StateCode.OK;
         }catch(org.hibernate.NonUniqueObjectException e){
             s.getTransaction().rollback();
             LOGGER.error(e);
-            ret = GroupDaoOld.DUPLICATED_MEMBER;
+            ret = StateCode.DUPLICATED_MEMBER;
         }catch(Exception e){
             s.getTransaction().rollback();
             LOGGER.error(e.getMessage() + e.getClass());

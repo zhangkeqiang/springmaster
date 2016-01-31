@@ -41,7 +41,7 @@ import org.apache.logging.log4j.Logger;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
 public class GroupDaoOldTest {
-	private static final Logger log = LogManager.getLogger(GroupDaoOldTest.class);
+	private static final Logger log = LogManager.getLogger(GroupDaoTest.class);
 	
    @Resource
     private SessionFactory sessionFactory;

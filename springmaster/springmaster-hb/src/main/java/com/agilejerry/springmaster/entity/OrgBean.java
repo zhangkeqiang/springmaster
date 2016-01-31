@@ -24,7 +24,7 @@ public class OrgBean implements Serializable {
 	private String name;
 	
 	private Set<UserBean> users = new HashSet<UserBean>(0);
-	
+	private Set<GroupBean> groups = new HashSet<GroupBean>(0);
 	public OrgBean(String name) {
 		this.name = name;
 	}
@@ -73,6 +73,14 @@ public class OrgBean implements Serializable {
 	public void setUsers(Set<UserBean> users) {
 		this.users = users;
 	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "org",cascade=(CascadeType.ALL))
+    public Set<GroupBean> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<GroupBean> groups) {
+        this.groups = groups;
+    }
 	
 	
 }

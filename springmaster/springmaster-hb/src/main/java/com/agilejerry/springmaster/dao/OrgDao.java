@@ -1,5 +1,7 @@
 package com.agilejerry.springmaster.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +18,27 @@ public class OrgDao extends BaseDao<OrgBean> {
 
     public OrgBean getDefault() {
         return get(1);
+    }
+
+    public List<GroupBean> listAdministrationGroup(OrgBean orgBean) {
+        Set<GroupBean> groupSet = orgBean.getGroups();
+        List<GroupBean> groupList = new ArrayList<GroupBean>();
+        for(GroupBean group: groupSet){
+            if("Administration".equals(group.getType()))
+                groupList.add(group);
+        }
+        return groupList;
+    }
+
+    public boolean contains(OrgBean orgBean, UserBean userBean) {        
+        return orgBean.getUsers().contains(userBean);
+    }
+
+    public void enroll(OrgBean orgBean, UserBean userBean) {
+        userBean.setOrg(orgBean);
+        getSession().beginTransaction();
+        getSession().update(userBean);
+        getSession().getTransaction().commit();
     }
    
 
