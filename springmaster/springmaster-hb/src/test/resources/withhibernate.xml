@@ -64,6 +64,10 @@
 				<prop key="hibernate.hibernate.cache.use_second_level_cache">${hibernate.hibernate.cache.use_second_level_cache}
 				</prop>
 				<prop key="hibernate.hibernate.ejb.naming_strategy">${hibernate.hibernate.ejb.naming_strategy}</prop>
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
+	<!-- 			<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+		 -->	
 			</props>
 		</property>
 	</bean>

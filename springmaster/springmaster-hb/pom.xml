@@ -8,11 +8,13 @@
 	</parent>
 	<artifactId>springmaster-hb</artifactId>
 
-<!-- 	<dependencies>
+	<dependencies>
 		<dependency>
-			<groupId>com.agilejerry</groupId>
-			<artifactId>springmaster</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.10.1</version>
 		</dependency>
-	</dependencies> -->
+		<!-- <dependency> <groupId>com.agilejerry</groupId> <artifactId>springmaster</artifactId> 
+			<version>0.0.1-SNAPSHOT</version> </dependency> -->
+	</dependencies>
 </project>

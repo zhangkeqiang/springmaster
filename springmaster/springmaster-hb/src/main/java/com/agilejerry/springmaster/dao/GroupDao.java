@@ -20,7 +20,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 @Repository
-public class GroupDao  extends BaseDao {
+public class GroupDao  extends BasicDao {
     private static final Logger LOGGER = LogManager.getLogger(GroupDao.class);
     public static final int DUPLICATED_MEMBER = -2;
 

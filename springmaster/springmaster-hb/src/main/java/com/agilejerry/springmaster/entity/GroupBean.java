@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,6 +28,7 @@ public class GroupBean implements Serializable {
 	private String name;
 	private String type;
 	private Set<UserBean> users = new HashSet<UserBean>(0);
+	private OrgBean org;
 	
 	@Id
     @GeneratedValue
@@ -58,7 +60,7 @@ public class GroupBean implements Serializable {
 
 
 	
-//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups",cascade=(CascadeType.ALL))
+//  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "groups",cascade=(CascadeType.ALL))
 	@ManyToMany(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
 	@JoinTable(name = "GROUP_MEMBER", joinColumns = { 
 			@JoinColumn(name = "GROUP_ID", nullable = true, updatable = true) }, 
@@ -79,6 +81,19 @@ public class GroupBean implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+
+	@ManyToOne(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinColumn(name = "ORG_ID", nullable = true)
+    public OrgBean getOrg() {
+        return org;
+    }
+
+
+
+    public void setOrg(OrgBean org) {
+        this.org = org;
+    }
 	
 	
 }

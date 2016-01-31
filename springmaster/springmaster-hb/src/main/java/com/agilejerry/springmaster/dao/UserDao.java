@@ -16,7 +16,7 @@ import java.util.Set;
 
 
 @Repository
-public class UserDao extends BaseDao{
+public class UserDao extends BasicDao{
     
     public static final String ADMINISTRATION = "Administration";
     private static final Logger LOGGER = LogManager.getLogger(UserDaoTest.class);
