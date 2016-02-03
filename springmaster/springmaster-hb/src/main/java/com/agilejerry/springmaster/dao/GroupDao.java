@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.entity.GroupBean;
@@ -22,6 +23,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 @Repository
+@Transactional
 public class GroupDao  extends BaseDao<GroupBean> {
     @Autowired
     protected UserDao userDao;

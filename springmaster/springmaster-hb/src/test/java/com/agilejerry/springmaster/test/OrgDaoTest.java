@@ -20,8 +20,10 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agilejerry.springmaster.StateCode;
+import com.agilejerry.springmaster.dao.GroupDao;
 import com.agilejerry.springmaster.dao.GroupDaoOld;
 import com.agilejerry.springmaster.dao.OrgDao;
 import com.agilejerry.springmaster.dao.UserDaoOld;
@@ -33,6 +35,7 @@ import com.agilejerry.springmaster.entity.UserBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
+@Transactional
 public class OrgDaoTest {
 	private static final Logger LOGGER = LogManager.getLogger(OrgDaoTest.class);
 	@Rule 
@@ -43,7 +46,7 @@ public class OrgDaoTest {
 	@Autowired
     private UserDaoOld userDao;
 	@Autowired
-	private GroupDaoOld groupDao;
+	private GroupDao groupDao;
 	
 	private Object[][] groupForInit = {
 	        {"",""}
@@ -107,7 +110,7 @@ public class OrgDaoTest {
 	    int ret;
 	    groupDao.setSession(orgDao.getSession());
         ret = groupDao.create(group);
-        Assert.assertEquals(StateCode.ORG_IS_NOT_SET, ret);	  
+        Assert.assertEquals(StateCode.FIELD_NEEDED, ret);	  
 	    LOGGER.warn("Set org, then Re-Create it");
 	    
 	    group = new GroupBean();
@@ -118,7 +121,7 @@ public class OrgDaoTest {
 	    LOGGER.warn(ret);
         Assert.assertEquals(true, ret > 2);
         
-        Assert.assertEquals(StateCode.OK, groupDao.delete(group));
+        Assert.assertEquals(true, groupDao.delete(group));
 	    
 	}
 	
@@ -143,10 +146,10 @@ public class OrgDaoTest {
 	        group.setName("企划组");
 	        group.setType("Administration");
 	        int ret;
-	        groupDao.setSession(orgDao.getSession());
+	        //groupDao.setSession(orgDao.getSession());
 	        ret = groupDao.create(group);
-	        Assert.assertEquals(StateCode.ORG_IS_NOT_SET, ret);   
-	        Assert.assertEquals(StateCode.OK, groupDao.delete(group));
+	        Assert.assertEquals(StateCode.FIELD_NEEDED, ret);   
+	        Assert.assertEquals(true, groupDao.delete(group));
 	        
 	        OrgBean mockOrg = mock(OrgBean.class);
 	        when(mockOrg.getName()).thenReturn("气候部");
@@ -162,7 +165,7 @@ public class OrgDaoTest {
 	        
 	        verify(mockOrg,atLeast(1)).getId();
 	        verify(mockOrg,times(0)).getName();
-	        Assert.assertEquals(StateCode.OK, groupDao.delete(group));
+	        Assert.assertEquals(true, groupDao.delete(group));
 	        
 	    }
 	

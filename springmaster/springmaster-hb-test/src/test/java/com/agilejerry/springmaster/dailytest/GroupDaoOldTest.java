@@ -1,4 +1,4 @@
-package com.agilejerry.springmaster.test;
+package com.agilejerry.springmaster.dailytest;
 
 
 import static org.junit.Assert.*;
@@ -43,9 +43,9 @@ import org.apache.logging.log4j.Logger;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
 public class GroupDaoOldTest {
-	private static final Logger log = LogManager.getLogger(GroupDaoTest.class);
+	private static final Logger log = LogManager.getLogger(GroupDaoOldTest.class);
 	
-   @Resource
+    @Resource
     private SessionFactory sessionFactory;
 	   
 	@Autowired 
@@ -83,12 +83,11 @@ public class GroupDaoOldTest {
 	
 
     int[][] data = {
-            {6, 1, StateCode.DUPLICATED_MEMBER,-1},
-            {1,  1, StateCode.DUPLICATED_MEMBER,-2},
-            {50, 3, StateCode.DUPLICATED_MEMBER,-1},
-            {50, 4, StateCode.DUPLICATED_MEMBER,-1},
-            {1, 2, StateCode.OK,1},
-            {1, 3, StateCode.OK,1}
+            {1,  1, StateCode.DUPLICATED_MEMBER,StateCode.HAVE_ADMINISTRATION_GROUP},
+//            {50, 3, StateCode.DUPLICATED_MEMBER,-1},
+//            {50, 4, StateCode.DUPLICATED_MEMBER,-1},
+//            {1, 2, StateCode.OK,1},
+//            {1, 3, StateCode.OK,1}
     };
     
     @Test
@@ -153,7 +152,7 @@ public class GroupDaoOldTest {
 		
 		Session s = groupDao.getSession();
         
-        GroupBean g = (GroupBean) s.get(GroupBean.class, 50);
+        GroupBean g = (GroupBean) s.get(GroupBean.class, 1);
         Set<UserBean> users = g.getUsers();
        
         
@@ -165,29 +164,9 @@ public class GroupDaoOldTest {
 	   
 	}
 	
-	
-   @Test
-    public void member_in_admininstration_group_should_belong_to_same_org_as_the_group(){
-        
-    }
-	
-	
-
-	
-
-	
 	@After
 	public void tearDown(){
 		log.warn(testName.getMethodName() + " end");
-	      //clear the changed or added data
-/*        for(int i=0;i<data.length;i++){
-            if(data[i][2] == GroupDao.OK){
-                // new group member need be removed
-              GroupBean group = groupDao.get(data[i][0]);
-              UserBean user = userDao.get(data[i][1]);
-              userDao.breakAwayGroup(user, group);
-            }
-        }*/
 		groupDao.closeSession();
 	}
 }

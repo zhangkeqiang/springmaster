@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.dao.AdministrationGroupDao;
@@ -43,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:withhibernate.xml")
+@Transactional
 public class AdministrationGroupDaoTest {
     private static final Logger LOGGER = LogManager.getLogger(AdministrationGroupDaoTest.class);
 
@@ -71,7 +73,6 @@ public class AdministrationGroupDaoTest {
 
     @Test
     public void add_member_to_ad_group_need_move_if_already_in_another_ad_group() {
-        userDao.setSession(adGroupDao.getSession());
         for(int i=0;i<data.length;i++){
             UserBean user = userDao.get(data[i][1]);
             GroupBean group = adGroupDao.get(data[i][0]);
@@ -83,12 +84,10 @@ public class AdministrationGroupDaoTest {
                 continue;
             }
             Assert.assertTrue(adGroupDao.checkContains(group, user));
-            adGroupDao.flushSession();
             adGroupDao.removeMember(group, user);
             Assert.assertFalse(adGroupDao.checkContains(group, user));
             if (userAdGroup != null) {
                 LOGGER.info(userAdGroup);
-                adGroupDao.flushSession();
                 ret = adGroupDao.addMember(userAdGroup, user);
                 LOGGER.warn(ret);
                 Assert.assertTrue(adGroupDao.checkContains(userAdGroup, user));
@@ -97,12 +96,11 @@ public class AdministrationGroupDaoTest {
 
     }
 
-    // TODO groupmemberbean to OneToMany and ManyToOne to replace ManyToMany
+    // groupmemberbean to OneToMany and ManyToOne to replace ManyToMany
 
     @Test
     public void member_in_admininstration_group_should_belong_to_same_org_as_the_group() {
-        // TODO member check administration
-        orgDao.setSession(adGroupDao.getSession());
+        // member check administration
         OrgBean org1 = orgDao.get(1);
         List<GroupBean> adminGroupList = orgDao.listAdministrationGroup(org1);
         Assert.assertNotNull(adminGroupList);

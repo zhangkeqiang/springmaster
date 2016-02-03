@@ -10,12 +10,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.OrgBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
 @Repository
+@Transactional
 public class OrgDao extends BaseDao<OrgBean> {
     private static final Logger LOGGER = LogManager.getLogger(OrgDao.class);
 

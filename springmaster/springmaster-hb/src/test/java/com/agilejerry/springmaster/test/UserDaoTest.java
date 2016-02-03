@@ -18,6 +18,7 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agilejerry.springmaster.StateCode;
 import com.agilejerry.springmaster.dao.GroupDao;
@@ -29,6 +30,7 @@ import com.agilejerry.springmaster.entity.UserBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:withhibernate.xml") 
+@Transactional
 public class UserDaoTest {
 	private static final Logger log = LogManager.getLogger(UserDaoTest.class);
 	@Rule 

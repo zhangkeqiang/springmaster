@@ -102,18 +102,20 @@ public class UserDaoOld extends BasicDao{
         Session s = getSession();
         int ret = 0;
         try{
-            s.beginTransaction();
+            //s.beginTransaction();
             s.update(user);
-            s.getTransaction().commit();   
+          //  s.getTransaction().commit();   
             ret = StateCode.OK;
         }catch(org.hibernate.NonUniqueObjectException e){
-            s.getTransaction().rollback();
+           // s.getTransaction().rollback();
+            s.clear();
             LOGGER.warn(user.getUserName() +"has already joined that group");
             LOGGER.warn(e.getMessage());
             LOGGER.error(e);
             ret = StateCode.DUPLICATED_MEMBER;
         }catch(Exception e){
-            s.getTransaction().rollback();
+          //  s.getTransaction().rollback();
+            s.clear();
             LOGGER.error(e.getMessage() + e.getClass());
             LOGGER.info(e);
             ret = -99;

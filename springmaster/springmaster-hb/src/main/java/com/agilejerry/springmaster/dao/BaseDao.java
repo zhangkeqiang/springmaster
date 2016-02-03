@@ -1,9 +1,11 @@
 package com.agilejerry.springmaster.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Transactional;
 import org.apache.logging.log4j.LogManager;  
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +17,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-
+@Transactional
 public abstract class BaseDao<E>{
     private static final Logger LOGGER = LogManager.getLogger(BaseDao.class);
     
@@ -23,6 +25,7 @@ public abstract class BaseDao<E>{
     
     @Resource
     protected SessionFactory sessionFactory;
+    
     protected Session session;
     
     @SuppressWarnings("unchecked")
@@ -40,18 +43,28 @@ public abstract class BaseDao<E>{
     }
 
     public int create(E entity){
-        getSession().beginTransaction();
-        int ret = (int) getSession().save(entity);
-        getSession().getTransaction().commit();
+        //getSession().beginTransaction();
+        int ret = StateCode.ERROR;
+        try{
+            ret = (int) getSession().save(entity);
+        }catch(ConstraintViolationException e){
+            ret = StateCode.FIELD_NEEDED;
+            LOGGER.error("ConstraintViolationException");
+            LOGGER.error(e);
+            getSession().clear();
+        }catch(Exception e){
+            LOGGER.error(e);
+        }
+        //getSession().getTransaction().commit();
         return ret;
     }
     public boolean delete(E entity) {
-        getSession().beginTransaction();
+        //getSession().beginTransaction();
         try{
             getSession().delete(entity);
-            getSession().getTransaction().commit();
+           // getSession().getTransaction().commit();
         }catch(Exception e){
-            getSession().getTransaction().rollback();
+          //  getSession().getTransaction().rollback();
             LOGGER.error(e);
             return false;
         }
@@ -75,53 +88,61 @@ public abstract class BaseDao<E>{
         Session s = getSession();
         int ret = 0;
         try{
-            s.beginTransaction();
             s.update(entity);
-            s.getTransaction().commit();   
             ret = StateCode.OK;
         }catch(org.hibernate.NonUniqueObjectException e){
-            s.getTransaction().rollback();
+            s.clear();
             LOGGER.error(e);
             ret = StateCode.DUPLICATED_MEMBER;
         }catch(Exception e){
-            s.getTransaction().rollback();
+            s.clear();
             LOGGER.error(e.getMessage() + e.getClass());
             LOGGER.error(e);
-            ret = -99;
+            ret = StateCode.ERROR;
         }
         return ret;
     }
     public void setSession(Session session){
         this.session = session;
     }
+    
     public Session getSession(){
-//        Session currSession = sessionFactory.getCurrentSession();
-//        if(currSession !=null && currSession.isConnected() && currSession.isOpen()){
-//            LOGGER.debug("getCurrentSession");
-//            return currSession;
-//        }
+        try{
+            Session currSession = sessionFactory.getCurrentSession();
+            LOGGER.debug("getCurrentSession-AutomaticOne");
+            return currSession;
+        }catch(HibernateException e) {
+            LOGGER.error(e);
+            return null;
+        } 
+    }
+
+
+    protected Session getNonAutomaticSession() {
         if(session == null){
             session = sessionFactory.openSession();
-            LOGGER.debug("open session from null");
+            LOGGER.debug("getNonAutomaticSession-open session from null");
             return session;
         }
         if(session.isConnected() && session.isOpen()){
-            LOGGER.debug("existed session");
+            LOGGER.debug("getNonAutomaticSession-existed session");
         }else{
-            LOGGER.debug("open session from not connected");
+            LOGGER.debug("getNonAutomaticSession-open session from not connected");
             session = sessionFactory.openSession();
         }
         return session;
     }
     
     public void closeSession(){
-        LOGGER.debug("close session");
+        LOGGER.debug("closing NonAutomatic session");
         if(session!=null && session.isOpen())
             session.close();
+        else
+            LOGGER.debug("NonAutomatic session is no need to close");
     }
     
-    public void flushSession(){
-        LOGGER.debug("flush session");
+    public void flushNonAutomaticSession(){
+        LOGGER.debug("flush NonAutomatic session");
         if(session!=null)
             session.flush();
     }
