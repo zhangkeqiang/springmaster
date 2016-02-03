@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.agilejerry.springmaster.entity.GroupBean;
@@ -30,8 +33,13 @@ public class OrgDao extends BaseDao<OrgBean> {
         return groupList;
     }
 
-    public boolean contains(OrgBean orgBean, UserBean userBean) {        
-        return orgBean.getUsers().contains(userBean);
+    public boolean contains(OrgBean orgBean, UserBean userBean) {  
+        String hql = "From UserBean u JOIN u.org o with o.id =:OID WHERE u.userNo = :UserNo";
+        Query q = getSession().createQuery(hql);
+        q.setParameter("OID", orgBean.getId());
+        q.setParameter("UserNo", userBean.getUserNo());
+        return q.list().size() == 1;
+       
     }
 
     public void enroll(OrgBean orgBean, UserBean userBean) {

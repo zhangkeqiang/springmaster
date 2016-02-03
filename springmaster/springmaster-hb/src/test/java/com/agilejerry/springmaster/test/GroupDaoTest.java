@@ -66,12 +66,12 @@ public class GroupDaoTest {
 	public void testGroupCRUD() {
 		
 		GroupBean groupA = new GroupBean();
-		groupA.setName("销售2组");
+		groupA.setName("销售1组");
 		groupA.setType("Administration");
 		groupA.setOrg(orgDao.getDefault());
 		groupDao.setSession(orgDao.getSession());
 		int aGroupID = groupDao.create(groupA);
-		Assert.assertTrue(aGroupID>1);
+		Assert.assertTrue(aGroupID>2);
 		groupA.setType("Administration");
 		groupA.setName("直销2组");
 		groupDao.update(groupA);
@@ -84,12 +84,8 @@ public class GroupDaoTest {
 	
 
     int[][] data = {
-//            {6, 1, StateCode.DUPLICATED_MEMBER,-1},
-//            {1,  1, StateCode.DUPLICATED_MEMBER,-2},
-//            {50, 3, StateCode.DUPLICATED_MEMBER,-1},
-//            {50, 4, StateCode.DUPLICATED_MEMBER,-1},
-//            {1, 2, StateCode.OK,1},
-            {1, 3, StateCode.OK,1}
+            {1, 1, StateCode.DUPLICATED_MEMBER, StateCode.HAVE_ADMINISTRATION_GROUP},
+            {1, 2, StateCode.OK, StateCode.OK},
     };
     
     @Test
@@ -126,6 +122,7 @@ public class GroupDaoTest {
 			}
 		}
 		
+		//clear the changed data
         for(int i=0;i<data.length;i++){
             if(data[i][3] == StateCode.OK){
               // new group member need be removed
@@ -154,7 +151,7 @@ public class GroupDaoTest {
 		
 		Session s = groupDao.getSession();
         
-        GroupBean g = (GroupBean) s.get(GroupBean.class, 50);
+        GroupBean g = (GroupBean) s.get(GroupBean.class, 1);
         Set<UserBean> users = g.getUsers();
        
         

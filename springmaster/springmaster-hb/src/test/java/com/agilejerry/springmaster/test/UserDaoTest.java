@@ -83,9 +83,9 @@ public class UserDaoTest {
 	
 	@Test
 	public void testcheckAdministrationGroupOfUser(){
-	    int[] userids = {2,
-	            3,
-	            4
+	    int[] userids = {1,
+//	            3,
+//	            4
 	            };
 	    for(int i=0;i<userids.length;i++){
 	        UserBean user = (UserBean) userDao.get(userids[i]);
@@ -110,9 +110,9 @@ public class UserDaoTest {
 	
     int[][] data = {
             {1,2,StateCode.OK},
-            {1,3,StateCode.OK},
-            {1,8,StateCode.DUPLICATED_MEMBER},
-            {50,8,StateCode.OK},
+//            {1,3,StateCode.OK},
+//            {1,8,StateCode.DUPLICATED_MEMBER},
+//            {50,8,StateCode.OK},
     };
     
 	@Test

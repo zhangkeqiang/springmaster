@@ -62,8 +62,7 @@ public class AdministrationGroupDaoTest {
     }
 
     int[][] data = { 
-            { 6, 1, StateCode.OK, -1 }, 
-            { 1, 1, StateCode.NOT_ADMINISTRATION_GROUP, -2 },
+            { 2, 1, StateCode.OK, -2 },
 //            { 50, 3, StateCode.OK, -1 }, 
 //            { 51, 4, StateCode.OK, -1 },
 //            { 6, 2, StateCode.OK, 1 }, 

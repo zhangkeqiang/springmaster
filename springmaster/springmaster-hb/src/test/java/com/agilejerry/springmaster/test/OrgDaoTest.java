@@ -44,6 +44,10 @@ public class OrgDaoTest {
     private UserDaoOld userDao;
 	@Autowired
 	private GroupDaoOld groupDao;
+	
+	private Object[][] groupForInit = {
+	        {"",""}
+	};
 	@Before
 	public void setUp(){
 		LOGGER.warn(testName.getMethodName() + " Start...");		
@@ -76,17 +80,23 @@ public class OrgDaoTest {
 	
 	@Test 
 	public void test_change_org(){
-	    OrgBean org = orgDao.get(1);
+	    OrgBean newOrg = orgDao.get(2);
 	    userDao.setSession(orgDao.getSession());
-	    UserBean userA = userDao.get(4);
-	    OrgBean userOldOrg = userA.getOrg();
-	    userA.setOrg(org);
+	    UserBean userA = userDao.get(1);
+	    OrgBean oldOrg = userA.getOrg();
+	    LOGGER.info(oldOrg);
+	    userA.setOrg(newOrg);
+	    userDao.update(userA);
+	    //orgDao.flushSession();
+	    assertTrue(orgDao.contains(newOrg, userA));
+	    assertFalse(orgDao.contains(oldOrg, userA));
 	    
-	    orgDao.flushSession();
-	    UserBean userB = userDao.get(4);
-	    Assert.assertEquals(org.getName(), userB.getOrg().getName());	    
-	    userB.setOrg(userOldOrg);
+	    UserBean userB = userDao.get(1);
+	    Assert.assertEquals(newOrg.getName(), userB.getOrg().getName());	    
+	    userB.setOrg(oldOrg);
 	    userDao.update(userB);
+	    assertTrue(orgDao.contains(oldOrg, userB));
+        assertFalse(orgDao.contains(newOrg, userB));
 	}
 	
 	@Test
@@ -106,7 +116,7 @@ public class OrgDaoTest {
 	    group.setOrg(orgDao.get(2));
 	    ret = groupDao.create(group);
 	    LOGGER.warn(ret);
-        Assert.assertEquals(true, ret > 10);
+        Assert.assertEquals(true, ret > 2);
         
         Assert.assertEquals(StateCode.OK, groupDao.delete(group));
 	    
@@ -136,7 +146,7 @@ public class OrgDaoTest {
 	        groupDao.setSession(orgDao.getSession());
 	        ret = groupDao.create(group);
 	        Assert.assertEquals(StateCode.ORG_IS_NOT_SET, ret);   
-	        LOGGER.warn("Set org, then Re-Create it");
+	        Assert.assertEquals(StateCode.OK, groupDao.delete(group));
 	        
 	        OrgBean mockOrg = mock(OrgBean.class);
 	        when(mockOrg.getName()).thenReturn("气候部");
@@ -148,7 +158,7 @@ public class OrgDaoTest {
 	        group.setOrg(mockOrg);
 	        ret = groupDao.create(group);
 	        LOGGER.warn(ret);
-	        Assert.assertEquals(true, ret > 10);
+	        Assert.assertEquals(true, ret > 2);
 	        
 	        verify(mockOrg,atLeast(1)).getId();
 	        verify(mockOrg,times(0)).getName();
