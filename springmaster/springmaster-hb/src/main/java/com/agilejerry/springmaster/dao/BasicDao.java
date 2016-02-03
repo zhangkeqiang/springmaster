@@ -23,12 +23,6 @@ public abstract class BasicDao{
         this.session = session;
     }
     public Session getSession(){
-//        Session currSession = sessionFactory.getCurrentSession();
-//        if(currSession !=null && currSession.isConnected() && currSession.isOpen()){
-//            LOGGER.debug("getCurrentSession");
-//            currSession.beginTransaction();
-//            return currSession;
-//        }
         if(session == null){
             session = sessionFactory.openSession();
             LOGGER.debug("open session from null");

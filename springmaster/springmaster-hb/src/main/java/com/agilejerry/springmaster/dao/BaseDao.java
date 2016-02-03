@@ -4,13 +4,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.logging.log4j.LogManager;  
 import org.apache.logging.log4j.Logger;
 
 import com.agilejerry.springmaster.StateCode;
-import com.agilejerry.springmaster.entity.UserBean;
 import com.agilejerry.util.GenericUtil;
 
 import java.util.List;
@@ -43,7 +41,6 @@ public abstract class BaseDao<E>{
     }
 
     public int create(E entity){
-        //getSession().beginTransaction();
         int ret = StateCode.ERROR;
         try{
             ret = (int) getSession().save(entity);
@@ -55,16 +52,12 @@ public abstract class BaseDao<E>{
         }catch(Exception e){
             LOGGER.error(e);
         }
-        //getSession().getTransaction().commit();
         return ret;
     }
     public boolean delete(E entity) {
-        //getSession().beginTransaction();
         try{
             getSession().delete(entity);
-           // getSession().getTransaction().commit();
         }catch(Exception e){
-          //  getSession().getTransaction().rollback();
             LOGGER.error(e);
             return false;
         }

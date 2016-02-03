@@ -146,10 +146,7 @@ public class GroupDaoOldTest {
 	
 	@Test
 	public void group_users_can_be_get(){
-		log.warn(testName.getMethodName());
-//		GroupBean groupA = groupDao.get(50);
-//		Set<UserBean> users = groupDao.getUsers(groupA);
-		
+		log.warn(testName.getMethodName());		
 		Session s = groupDao.getSession();
         
         GroupBean g = (GroupBean) s.get(GroupBean.class, 1);
