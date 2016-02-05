@@ -28,7 +28,7 @@ import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:withhibernate.xml") 
+@ContextConfiguration(locations="classpath:testwithdb.xml") 
 @Transactional
 public class DaoTestExampe {
 	private static final Logger log = LogManager.getLogger(DaoTestExampe.class);

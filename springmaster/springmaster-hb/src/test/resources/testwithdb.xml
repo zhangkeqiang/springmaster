@@ -20,16 +20,13 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-	<!-- 定义 Autowired  自动注入 bean  -->
-	<context:annotation-config />
-	<context:component-scan base-package="com.agilejerry.springmaster" />
-	<context:component-scan base-package="com.agilejerry.springmaster.dao" />
-	<context:component-scan base-package="com.agilejerry.springmaster.impl" />
-	<context:component-scan base-package="com.agilejerry.springmaster.entity" />
 
-	<bean id="HighGradeMenu" class="com.agilejerry.springmaster.impl.HighGradeMenu" />
-	<bean id="MiddleGradeMenu" class="com.agilejerry.springmaster.impl.MiddleGradeMenu" />
-
+	    <!-- 如果你喜欢用xml方式来加载spring配置，那就在spring目录下新建xml即可，系统会自动扫描 -->
     <import resource="classpath*:spring/hibernate.xml" />
-
+    
+	
+	<!-- <context:component-scan base-package="com.agilejerry.springmaster.dao" 
+		/> <context:component-scan base-package="com.agilejerry.springmaster.impl" 
+		/> <context:component-scan base-package="com.agilejerry.springmaster.entity" 
+		/> -->
 </beans>

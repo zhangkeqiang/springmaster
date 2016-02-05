@@ -29,7 +29,7 @@ import com.agilejerry.springmaster.entity.GroupBean;
 import com.agilejerry.springmaster.entity.UserBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:withhibernate.xml") 
+@ContextConfiguration(locations="classpath:testwithdb.xml") 
 @Transactional
 public class UserDaoTest {
 	private static final Logger log = LogManager.getLogger(UserDaoTest.class);
@@ -125,7 +125,6 @@ public class UserDaoTest {
 			GroupBean group = groupDao.get(data[i][0]);
 			Assert.assertNotNull(group);
 			log.warn(group);
-			userDao.setSession(groupDao.getSession());
 			UserBean user = userDao.get(data[i][1]);
 			log.warn(user);
 			Assert.assertNotNull(user);

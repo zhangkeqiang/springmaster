@@ -232,10 +232,23 @@
 				</configuration>
 			</plugin>
 		</plugins>
+	<!-- 	<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>local/*</exclude>
+					<exclude>sit/*</exclude>
+					<exclude>uat/*</exclude>
+					<exclude>prd/*</exclude>
+				</excludes>
+			</resource>
+		</resources> -->
 	</build>
 	<modules>
 		<module>springmaster-mybatis</module>
 		<module>springmaster-hb</module>
 		<module>springmaster-hb-test</module>
+		<module>springmaster-biz</module>
 	</modules>
 </project>

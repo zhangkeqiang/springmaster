@@ -34,7 +34,7 @@ import com.agilejerry.springmaster.entity.UserBean;
   
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:withhibernate.xml") 
+@ContextConfiguration(locations="classpath:testwithdb.xml") 
 @Transactional
 public class OrgDaoTest {
 	private static final Logger LOGGER = LogManager.getLogger(OrgDaoTest.class);

@@ -29,6 +29,7 @@ public class GroupBean implements Serializable {
 	private String type;
 	private Set<UserBean> users = new HashSet<UserBean>(0);
 	private OrgBean org;
+    private UserBean leader;
 	
 	@Id
     @GeneratedValue
@@ -94,6 +95,16 @@ public class GroupBean implements Serializable {
     public void setOrg(OrgBean org) {
         this.org = org;
     }
+
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade={CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinColumn(name = "GROUP_LEADER_ID", nullable = true)
+    public UserBean getLeader() {
+        return leader;
+    }
 	
+    public void setLeader(UserBean leader) {
+        this.leader = leader;
+    }
 	
 }

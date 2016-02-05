@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" 
-	xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation=" 
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
-	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd 
-	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
-	http://www.springframework.org/schema/cache  http://www.springframework.org/schema/cache/spring-cache-4.0.xsd"> -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
@@ -20,18 +12,9 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-	<!-- 定义 Autowired  自动注入 bean  -->
-	<context:annotation-config />
-	<context:component-scan base-package="com.agilejerry.springmaster.*" />
-<!-- 	<context:component-scan base-package="com.agilejerry.springmaster.dao" />
-	<context:component-scan base-package="com.agilejerry.springmaster.impl" />
-	<context:component-scan base-package="com.agilejerry.springmaster.entity" /> -->
-
-	<bean id="HighGradeMenu" class="com.agilejerry.springmaster.impl.HighGradeMenu" />
-	<bean id="MiddleGradeMenu" class="com.agilejerry.springmaster.impl.MiddleGradeMenu" />
-
+	
 	<!-- 读取mysql jdbc的配置 -->
-	<context:property-placeholder location="classpath:application.properties" />
+	<context:property-placeholder location="classpath:hibernate.properties" />
 	<!-- 配置数据源，从上面配置文件读取 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="${database.driverClassName}" />
@@ -64,25 +47,26 @@
 				<prop key="hibernate.hibernate.cache.use_second_level_cache">${hibernate.hibernate.cache.use_second_level_cache}
 				</prop>
 				<prop key="hibernate.hibernate.ejb.naming_strategy">${hibernate.hibernate.ejb.naming_strategy}</prop>
-				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
-	<!-- 			<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
-                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
-		 -->	
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext
+				</prop>
+				<!-- <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop> 
+					<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop> -->
 			</props>
 		</property>
 	</bean>
-   
+
 	<!-- 配置事务管理器 -->
 	<bean id="txManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-    <tx:annotation-driven transaction-manager="txManager"/>
-    
+
+
 	<!-- 配置事务异常封装 -->
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-
+	
+	<tx:annotation-driven transaction-manager="txManager" />
 	<!-- 声明式容器事务管理 -->
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
@@ -108,7 +92,7 @@
 		</tx:attributes>
 	</tx:advice>
 
-	<!-- 定义切面，在 * tdxy.*.service.*ServiceImpl.*(..) 中执行有关的hibernate session的事务操作  -->
+	<!-- 定义切面，在 (* com.agilejerry.springmaster..*.*(..)) 中执行有关的hibernate session的事务操作  -->
 	<aop:config expose-proxy="true">
 		<!-- 只对业务逻辑层实施事务 -->
 		<aop:pointcut id="txPointcut"

@@ -43,7 +43,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:withhibernate.xml") 
+@ContextConfiguration(locations="classpath:testwithdb.xml") 
 @Transactional
 public class GroupDaoTest {
 	private static final Logger LOGGER = LogManager.getLogger(GroupDaoTest.class);
@@ -71,7 +71,6 @@ public class GroupDaoTest {
 		groupA.setName("销售1组");
 		groupA.setType("Administration");
 		groupA.setOrg(orgDao.getDefault());
-		groupDao.setSession(orgDao.getSession());
 		int aGroupID = groupDao.create(groupA);
 		Assert.assertTrue(aGroupID>2);
 		groupA.setType("Administration");

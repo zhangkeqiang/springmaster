@@ -44,7 +44,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:withhibernate.xml") 
+@ContextConfiguration(locations="classpath:testwithdb.xml") 
 @Transactional
 public class GroupMemberTest {
 	private static final Logger LOGGER = LogManager.getLogger(GroupMemberTest.class);
