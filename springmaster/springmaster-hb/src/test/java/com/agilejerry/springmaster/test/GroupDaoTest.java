@@ -167,7 +167,7 @@ public class GroupDaoTest {
 	
    @Test
     public void member_in_admininstration_group_should_belong_to_same_org_as_the_group(){
-        //TODO member check administration 
+        // member check administration 
        orgDao.setSession(groupDao.getSession());
        OrgBean org1 = orgDao.get(1);
        List<GroupBean> adminGroupList = orgDao.listAdministrationGroup(org1);
