@@ -10,7 +10,7 @@ public class EventService {
     @Autowired 
     EventAssistService eventAssistService;
     public EventService() {
-        // TODO Auto-generated constructor stub
+        
     }
     
     public int calc(int i){
