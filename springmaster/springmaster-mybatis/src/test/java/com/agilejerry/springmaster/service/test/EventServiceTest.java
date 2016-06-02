@@ -3,16 +3,24 @@ package com.agilejerry.springmaster.service.test;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.when;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.service.EventService;
 import com.agilejerry.springmaster.test.BaseTestCase;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:applicationTestWithMockContext.xml") 
+public class EventServiceTest {
 
-public class EventServiceTest extends BaseTestCase {
-
+    private final Logger log = LogManager.getLogger(EventServiceTest.class);
     @Autowired
     EventService eventService;
 
@@ -36,6 +44,7 @@ public class EventServiceTest extends BaseTestCase {
     public void testMock() {
         Assert.assertEquals(11, mockEventService.calc(102));
         Assert.assertEquals(0, mockEventService.calc(100));
+        log.warn("hello");
     }
 
 }

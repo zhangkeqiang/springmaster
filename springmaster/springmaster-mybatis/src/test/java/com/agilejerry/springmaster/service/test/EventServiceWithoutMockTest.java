@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.agilejerry.springmaster.service.EventAssistService;
 import com.agilejerry.springmaster.service.EventService;
 import com.agilejerry.springmaster.test.BaseTestCase;
+import  org.slf4j.Logger;
+import  org.slf4j.LoggerFactory;
 
 public class EventServiceWithoutMockTest extends BaseTestCase {
+
 
     @Autowired
     EventService eventService;
@@ -28,14 +31,15 @@ public class EventServiceWithoutMockTest extends BaseTestCase {
 
     @Test
     public void testReal1(){
-        System.out.println("EventServiceWithoutMockTest_testReal1");
-        System.out.println(eventAssistService.toString());
+        log.info("EventServiceWithoutMockTest_testReal1");
+        log.info(eventAssistService.toString());
         Assert.assertEquals(28, eventService.calc(1));
     }
 
     @Test
     public void testReal2(){
         Assert.assertEquals(64, eventService.calc(2));
+        log.info(eventAssistService);
     }
 
 }
