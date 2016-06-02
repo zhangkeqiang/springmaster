@@ -10,8 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,13 +19,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.agilejerry.springmaster.service.EventAssistService;
 import com.agilejerry.springmaster.service.EventService;
-
+import  org.slf4j.Logger;
+import  org.slf4j.LoggerFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:applicationTestWithMockContext.xml") 
 public class EventServiceWithInjectMocksTest extends AbstractJUnit4SpringContextTests{
 
-    private final Logger log = LogManager.getLogger(this);
+    private final Logger log = LoggerFactory.getLogger(EventServiceWithInjectMocksTest.class);
     @InjectMocks
     @Autowired
     EventService eventService;
@@ -57,7 +57,7 @@ public class EventServiceWithInjectMocksTest extends AbstractJUnit4SpringContext
         Assert.assertEquals(2, eventService.calc(1));
         verify(eventAssistService).calcByAssist(2);  
         verify(eventAssistService, times(1)).calcByAssist(2);
-        log.info(this.applicationContext);
+        log.info(this.applicationContext.toString());
     }
  
     @Test
